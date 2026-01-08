@@ -1,0 +1,675 @@
+<!-- Biological Age Calculator - Shopify Embed Version -->
+<!-- Copy and paste this entire code into your Shopify page HTML editor -->
+
+<style>
+:root {
+    --primary-color: #4CAF50;
+    --primary-dark: #45a049;
+    --secondary-color: #2196F3;
+    --accent-color: #FF9800;
+    --danger-color: #f44336;
+    --text-color: #333;
+    --text-light: #666;
+    --border-color: #ddd;
+    --background-light: #f9f9f9;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.bio-calc * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.bio-calc {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 20px auto;
+    max-width: 100%;
+}
+
+.bio-calc .calculator-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.bio-calc .calculator-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.bio-calc .calculator-header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.bio-calc .subtitle {
+    font-size: 1rem;
+    opacity: 0.95;
+    font-weight: 300;
+}
+
+.bio-calc .calculator-form {
+    padding: 30px;
+}
+
+.bio-calc .form-section {
+    margin-bottom: 30px;
+}
+
+.bio-calc .form-section h2 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+.bio-calc .form-group {
+    margin-bottom: 20px;
+}
+
+.bio-calc .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.bio-calc .form-group input,
+.bio-calc .form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: white;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.bio-calc .form-group input:focus,
+.bio-calc .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.bio-calc .form-group input:hover,
+.bio-calc .form-group select:hover {
+    border-color: var(--primary-dark);
+}
+
+.bio-calc .calculate-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.bio-calc .calculate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.bio-calc .calculate-btn:active {
+    transform: translateY(0);
+}
+
+.bio-calc .results-section {
+    padding: 30px;
+    background-color: var(--background-light);
+    border-top: 3px solid var(--primary-color);
+}
+
+.bio-calc .results-section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.bio-calc .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.bio-calc .result-card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.bio-calc .result-card:hover {
+    transform: translateY(-5px);
+}
+
+.bio-calc .result-card.highlight {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.bio-calc .result-label {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.bio-calc .result-card.highlight .result-label {
+    opacity: 0.95;
+}
+
+.bio-calc .result-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.bio-calc .result-message {
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 1.05rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.bio-calc .result-message.younger {
+    background-color: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+}
+
+.bio-calc .result-message.older {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 2px solid #ffeaa7;
+}
+
+.bio-calc .result-message.same {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 2px solid #bee5eb;
+}
+
+.bio-calc .recommendations {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.bio-calc .recommendations h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.bio-calc .recommendations ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.bio-calc .recommendations li {
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+    color: var(--text-color);
+}
+
+.bio-calc .recommendations li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.bio-calc .reset-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bio-calc .reset-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.bio-calc .disclaimer {
+    padding: 25px 30px;
+    background-color: var(--background-light);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.bio-calc .disclaimer strong {
+    color: var(--text-color);
+}
+
+.bio-calc .hidden {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .bio-calc .calculator-header {
+        padding: 30px 20px;
+    }
+
+    .bio-calc .calculator-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .bio-calc .subtitle {
+        font-size: 0.9rem;
+    }
+
+    .bio-calc .calculator-form {
+        padding: 20px;
+    }
+
+    .bio-calc .form-section h2 {
+        font-size: 1.2rem;
+    }
+
+    .bio-calc .results-section {
+        padding: 20px;
+    }
+
+    .bio-calc .results-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .bio-calc .result-value {
+        font-size: 2rem;
+    }
+
+    .bio-calc .disclaimer {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bio-calc .calculator-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .bio-calc .form-group input,
+    .bio-calc .form-group select {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    .bio-calc .calculate-btn {
+        padding: 14px;
+        font-size: 1rem;
+    }
+
+    .bio-calc .result-value {
+        font-size: 1.8rem;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bio-calc .results-section:not(.hidden) {
+    animation: fadeIn 0.5s ease;
+}
+</style>
+
+<div class="bio-calc">
+    <div class="calculator-container">
+        <div class="calculator-header">
+            <h1>🧬 Biological Age Calculator</h1>
+            <p class="subtitle">Discover your body's true age based on lifestyle factors</p>
+        </div>
+
+        <form id="age-calculator-form" class="calculator-form">
+            <div class="form-section">
+                <h2>Basic Information</h2>
+
+                <div class="form-group">
+                    <label for="chronological-age">Your Chronological Age</label>
+                    <input
+                        type="number"
+                        id="chronological-age"
+                        name="chronological-age"
+                        min="18"
+                        max="100"
+                        required
+                        placeholder="Enter your age"
+                    >
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Lifestyle Factors</h2>
+
+                <div class="form-group">
+                    <label for="exercise">Physical Activity Level</label>
+                    <select id="exercise" name="exercise" required>
+                        <option value="">Select...</option>
+                        <option value="5">Very Active (5+ times/week)</option>
+                        <option value="3">Moderately Active (3-4 times/week)</option>
+                        <option value="1">Lightly Active (1-2 times/week)</option>
+                        <option value="0">Sedentary (rarely exercise)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="diet">Diet Quality</label>
+                    <select id="diet" name="diet" required>
+                        <option value="">Select...</option>
+                        <option value="5">Excellent (mostly whole foods, balanced)</option>
+                        <option value="3">Good (balanced with occasional treats)</option>
+                        <option value="1">Fair (some processed foods)</option>
+                        <option value="0">Poor (mostly processed foods)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sleep">Sleep Quality (hours per night)</label>
+                    <select id="sleep" name="sleep" required>
+                        <option value="">Select...</option>
+                        <option value="5">7-9 hours (excellent)</option>
+                        <option value="3">6-7 hours (adequate)</option>
+                        <option value="1">5-6 hours (poor)</option>
+                        <option value="0">Less than 5 hours (very poor)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="stress">Stress Level</label>
+                    <select id="stress" name="stress" required>
+                        <option value="">Select...</option>
+                        <option value="5">Low (well-managed, relaxed)</option>
+                        <option value="3">Moderate (manageable)</option>
+                        <option value="1">High (often stressed)</option>
+                        <option value="0">Very High (chronically stressed)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="smoking">Smoking Status</label>
+                    <select id="smoking" name="smoking" required>
+                        <option value="">Select...</option>
+                        <option value="5">Never smoked</option>
+                        <option value="3">Former smoker (quit 5+ years ago)</option>
+                        <option value="1">Former smoker (quit recently)</option>
+                        <option value="0">Current smoker</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="alcohol">Alcohol Consumption</label>
+                    <select id="alcohol" name="alcohol" required>
+                        <option value="">Select...</option>
+                        <option value="5">None or minimal (0-2 drinks/week)</option>
+                        <option value="3">Moderate (3-7 drinks/week)</option>
+                        <option value="1">Heavy (8-14 drinks/week)</option>
+                        <option value="0">Very Heavy (15+ drinks/week)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bmi">Body Weight Status</label>
+                    <select id="bmi" name="bmi" required>
+                        <option value="">Select...</option>
+                        <option value="5">Healthy weight</option>
+                        <option value="3">Slightly overweight</option>
+                        <option value="1">Overweight</option>
+                        <option value="0">Obese</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="social">Social Connections</label>
+                    <select id="social" name="social" required>
+                        <option value="">Select...</option>
+                        <option value="5">Strong (regular meaningful connections)</option>
+                        <option value="3">Moderate (some connections)</option>
+                        <option value="1">Weak (few connections)</option>
+                        <option value="0">Isolated (very few connections)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Calculate My Biological Age</button>
+        </form>
+
+        <div id="results" class="results-section hidden">
+            <h2>Your Results</h2>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-label">Chronological Age</div>
+                    <div class="result-value" id="chrono-age">--</div>
+                </div>
+
+                <div class="result-card highlight">
+                    <div class="result-label">Biological Age</div>
+                    <div class="result-value" id="bio-age">--</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-label">Age Difference</div>
+                    <div class="result-value" id="age-diff">--</div>
+                </div>
+            </div>
+
+            <div class="result-message" id="result-message"></div>
+
+            <div class="recommendations" id="recommendations"></div>
+
+            <button class="reset-btn" onclick="resetBioCalculator()">Calculate Again</button>
+        </div>
+
+        <div class="disclaimer">
+            <p><strong>Disclaimer:</strong> This calculator provides an estimate based on lifestyle factors and is for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Consult with a healthcare provider for personalized health assessments.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('age-calculator-form');
+        if (form && !form.hasAttribute('data-listener-added')) {
+            form.setAttribute('data-listener-added', 'true');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                calculateBiologicalAge();
+            });
+        }
+    });
+
+    function calculateBiologicalAge() {
+        const chronologicalAge = parseInt(document.getElementById('chronological-age').value);
+        const exercise = parseInt(document.getElementById('exercise').value);
+        const diet = parseInt(document.getElementById('diet').value);
+        const sleep = parseInt(document.getElementById('sleep').value);
+        const stress = parseInt(document.getElementById('stress').value);
+        const smoking = parseInt(document.getElementById('smoking').value);
+        const alcohol = parseInt(document.getElementById('alcohol').value);
+        const bmi = parseInt(document.getElementById('bmi').value);
+        const social = parseInt(document.getElementById('social').value);
+
+        const lifestyleScore = exercise + diet + sleep + stress + smoking + alcohol + bmi + social;
+        const maxScore = 40;
+
+        const scorePercentage = lifestyleScore / maxScore;
+
+        let ageModifier;
+        if (scorePercentage >= 0.75) {
+            ageModifier = -10 + ((1 - scorePercentage) * 20);
+        } else if (scorePercentage >= 0.5) {
+            ageModifier = -5 + ((0.75 - scorePercentage) * 20);
+        } else if (scorePercentage >= 0.25) {
+            ageModifier = ((0.5 - scorePercentage) * 32);
+        } else {
+            ageModifier = 8 + ((0.25 - scorePercentage) * 28);
+        }
+
+        let biologicalAge = Math.round(chronologicalAge + ageModifier);
+        biologicalAge = Math.max(18, Math.min(120, biologicalAge));
+
+        displayResults(chronologicalAge, biologicalAge, lifestyleScore, maxScore);
+    }
+
+    function displayResults(chronologicalAge, biologicalAge, lifestyleScore, maxScore) {
+        const ageDifference = biologicalAge - chronologicalAge;
+
+        document.getElementById('chrono-age').textContent = chronologicalAge;
+        document.getElementById('bio-age').textContent = biologicalAge;
+
+        const ageDiffElement = document.getElementById('age-diff');
+        if (ageDifference > 0) {
+            ageDiffElement.textContent = '+' + ageDifference + ' years';
+            ageDiffElement.style.color = '#f44336';
+        } else if (ageDifference < 0) {
+            ageDiffElement.textContent = ageDifference + ' years';
+            ageDiffElement.style.color = '#4CAF50';
+        } else {
+            ageDiffElement.textContent = 'Same';
+            ageDiffElement.style.color = '#2196F3';
+        }
+
+        const resultMessage = document.getElementById('result-message');
+        if (ageDifference < -3) {
+            resultMessage.className = 'result-message younger';
+            resultMessage.textContent = 'Great news! Your biological age is ' + Math.abs(ageDifference) + ' years younger than your chronological age. Your healthy lifestyle is paying off!';
+        } else if (ageDifference > 3) {
+            resultMessage.className = 'result-message older';
+            resultMessage.textContent = 'Your biological age is ' + ageDifference + ' years older than your chronological age. There\'s room for improvement in your lifestyle habits.';
+        } else {
+            resultMessage.className = 'result-message same';
+            resultMessage.textContent = 'Your biological age matches your chronological age. You\'re maintaining a balanced lifestyle!';
+        }
+
+        generateRecommendations(lifestyleScore, maxScore);
+
+        const resultsSection = document.getElementById('results');
+        resultsSection.classList.remove('hidden');
+        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function generateRecommendations(lifestyleScore, maxScore) {
+        const recommendationsDiv = document.getElementById('recommendations');
+        const scorePercentage = (lifestyleScore / maxScore) * 100;
+
+        let recommendations = [];
+
+        const exercise = parseInt(document.getElementById('exercise').value);
+        const diet = parseInt(document.getElementById('diet').value);
+        const sleep = parseInt(document.getElementById('sleep').value);
+        const stress = parseInt(document.getElementById('stress').value);
+        const smoking = parseInt(document.getElementById('smoking').value);
+        const alcohol = parseInt(document.getElementById('alcohol').value);
+        const bmi = parseInt(document.getElementById('bmi').value);
+        const social = parseInt(document.getElementById('social').value);
+
+        if (exercise < 3) {
+            recommendations.push('Increase physical activity to at least 150 minutes of moderate exercise per week');
+        }
+
+        if (diet < 3) {
+            recommendations.push('Improve diet quality by incorporating more whole foods, fruits, and vegetables');
+        }
+
+        if (sleep < 3) {
+            recommendations.push('Prioritize 7-9 hours of quality sleep each night for optimal health');
+        }
+
+        if (stress < 3) {
+            recommendations.push('Practice stress management techniques like meditation, yoga, or deep breathing');
+        }
+
+        if (smoking < 3) {
+            recommendations.push('Consider smoking cessation programs to improve overall health');
+        }
+
+        if (alcohol < 3) {
+            recommendations.push('Reduce alcohol consumption to moderate levels or consider abstaining');
+        }
+
+        if (bmi < 3) {
+            recommendations.push('Work towards achieving a healthy body weight through balanced diet and exercise');
+        }
+
+        if (social < 3) {
+            recommendations.push('Strengthen social connections through regular interaction with friends and family');
+        }
+
+        if (scorePercentage >= 75) {
+            recommendations = [
+                'Maintain your excellent healthy habits',
+                'Continue regular health check-ups',
+                'Stay informed about new health research',
+                'Consider becoming a health mentor for others'
+            ];
+        }
+
+        let html = '<h3>Recommendations to Improve Your Biological Age</h3><ul>';
+        recommendations.forEach(function(rec) {
+            html += '<li>' + rec + '</li>';
+        });
+        html += '</ul>';
+
+        recommendationsDiv.innerHTML = html;
+    }
+
+    window.resetBioCalculator = function() {
+        document.getElementById('results').classList.add('hidden');
+        document.getElementById('age-calculator-form').reset();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.calculateBiologicalAge = calculateBiologicalAge;
+})();
+</script>

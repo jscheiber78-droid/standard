@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biological Age Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="calculator-header">
+            <h1>🧬 Biological Age Calculator</h1>
+            <p class="subtitle">Discover your body's true age based on lifestyle factors</p>
+        </div>
+
+        <form id="age-calculator-form" class="calculator-form">
+            <!-- Chronological Age -->
+            <div class="form-section">
+                <h2>Basic Information</h2>
+
+                <div class="form-group">
+                    <label for="chronological-age">Your Chronological Age</label>
+                    <input
+                        type="number"
+                        id="chronological-age"
+                        name="chronological-age"
+                        min="18"
+                        max="100"
+                        required
+                        placeholder="Enter your age"
+                    >
+                </div>
+            </div>
+
+            <!-- Lifestyle Factors -->
+            <div class="form-section">
+                <h2>Lifestyle Factors</h2>
+
+                <!-- Exercise -->
+                <div class="form-group">
+                    <label for="exercise">Physical Activity Level</label>
+                    <select id="exercise" name="exercise" required>
+                        <option value="">Select...</option>
+                        <option value="5">Very Active (5+ times/week)</option>
+                        <option value="3">Moderately Active (3-4 times/week)</option>
+                        <option value="1">Lightly Active (1-2 times/week)</option>
+                        <option value="0">Sedentary (rarely exercise)</option>
+                    </select>
+                </div>
+
+                <!-- Diet -->
+                <div class="form-group">
+                    <label for="diet">Diet Quality</label>
+                    <select id="diet" name="diet" required>
+                        <option value="">Select...</option>
+                        <option value="5">Excellent (mostly whole foods, balanced)</option>
+                        <option value="3">Good (balanced with occasional treats)</option>
+                        <option value="1">Fair (some processed foods)</option>
+                        <option value="0">Poor (mostly processed foods)</option>
+                    </select>
+                </div>
+
+                <!-- Sleep -->
+                <div class="form-group">
+                    <label for="sleep">Sleep Quality (hours per night)</label>
+                    <select id="sleep" name="sleep" required>
+                        <option value="">Select...</option>
+                        <option value="5">7-9 hours (excellent)</option>
+                        <option value="3">6-7 hours (adequate)</option>
+                        <option value="1">5-6 hours (poor)</option>
+                        <option value="0">Less than 5 hours (very poor)</option>
+                    </select>
+                </div>
+
+                <!-- Stress -->
+                <div class="form-group">
+                    <label for="stress">Stress Level</label>
+                    <select id="stress" name="stress" required>
+                        <option value="">Select...</option>
+                        <option value="5">Low (well-managed, relaxed)</option>
+                        <option value="3">Moderate (manageable)</option>
+                        <option value="1">High (often stressed)</option>
+                        <option value="0">Very High (chronically stressed)</option>
+                    </select>
+                </div>
+
+                <!-- Smoking -->
+                <div class="form-group">
+                    <label for="smoking">Smoking Status</label>
+                    <select id="smoking" name="smoking" required>
+                        <option value="">Select...</option>
+                        <option value="5">Never smoked</option>
+                        <option value="3">Former smoker (quit 5+ years ago)</option>
+                        <option value="1">Former smoker (quit recently)</option>
+                        <option value="0">Current smoker</option>
+                    </select>
+                </div>
+
+                <!-- Alcohol -->
+                <div class="form-group">
+                    <label for="alcohol">Alcohol Consumption</label>
+                    <select id="alcohol" name="alcohol" required>
+                        <option value="">Select...</option>
+                        <option value="5">None or minimal (0-2 drinks/week)</option>
+                        <option value="3">Moderate (3-7 drinks/week)</option>
+                        <option value="1">Heavy (8-14 drinks/week)</option>
+                        <option value="0">Very Heavy (15+ drinks/week)</option>
+                    </select>
+                </div>
+
+                <!-- BMI Category -->
+                <div class="form-group">
+                    <label for="bmi">Body Weight Status</label>
+                    <select id="bmi" name="bmi" required>
+                        <option value="">Select...</option>
+                        <option value="5">Healthy weight</option>
+                        <option value="3">Slightly overweight</option>
+                        <option value="1">Overweight</option>
+                        <option value="0">Obese</option>
+                    </select>
+                </div>
+
+                <!-- Social Connection -->
+                <div class="form-group">
+                    <label for="social">Social Connections</label>
+                    <select id="social" name="social" required>
+                        <option value="">Select...</option>
+                        <option value="5">Strong (regular meaningful connections)</option>
+                        <option value="3">Moderate (some connections)</option>
+                        <option value="1">Weak (few connections)</option>
+                        <option value="0">Isolated (very few connections)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Calculate My Biological Age</button>
+        </form>
+
+        <!-- Results Section -->
+        <div id="results" class="results-section hidden">
+            <h2>Your Results</h2>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-label">Chronological Age</div>
+                    <div class="result-value" id="chrono-age">--</div>
+                </div>
+
+                <div class="result-card highlight">
+                    <div class="result-label">Biological Age</div>
+                    <div class="result-value" id="bio-age">--</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-label">Age Difference</div>
+                    <div class="result-value" id="age-diff">--</div>
+                </div>
+            </div>
+
+            <div class="result-message" id="result-message"></div>
+
+            <div class="recommendations" id="recommendations"></div>
+
+            <button class="reset-btn" onclick="resetCalculator()">Calculate Again</button>
+        </div>
+
+        <div class="disclaimer">
+            <p><strong>Disclaimer:</strong> This calculator provides an estimate based on lifestyle factors and is for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Consult with a healthcare provider for personalized health assessments.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
