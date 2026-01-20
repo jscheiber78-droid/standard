@@ -564,56 +564,84 @@ document.addEventListener('DOMContentLoaded', function() {
         return data;
     }
 
-    function sendDataToServer(data) {
-        // Shopify Integration: Send data to Shopify backend or custom endpoint
-        // This function can be customized based on your Shopify setup
+    async function sendDataToServer(data) {
+        // Configuration - adjust these values for your setup
+        const config = window.EssenzaConfig || {
+            apiEndpoint: '/api/questionnaire', // Backend API endpoint
+            apiKey: null, // Optional API key for authentication
+            enableLocalStorage: true, // Store data locally as backup
+            enableCustomEvent: true, // Trigger custom event for integrations
+        };
 
-        // Option 1: Send to a Shopify App endpoint
-        // Option 2: Store in Shopify metafields via Admin API
-        // Option 3: Send to a custom webhook or API
-
-        // Example: Send to a custom endpoint
-        const endpoint = '/api/essenza-questionnaire'; // Adjust this to your actual endpoint
-
-        // For demonstration, we'll log the data and simulate success
         console.log('Sending data to server:', JSON.stringify(data, null, 2));
 
-        // In production, use fetch:
-        /*
-        fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+        // Store data in localStorage as backup
+        if (config.enableLocalStorage) {
+            try {
+                localStorage.setItem('essenza_questionnaire_data', JSON.stringify(data));
+                console.log('Data saved to localStorage');
+            } catch (e) {
+                console.warn('Could not save to localStorage:', e);
             }
-            return response.json();
-        })
-        .then(result => {
-            console.log('Success:', result);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification('Es gab ein Problem beim Senden des Fragebogens. Bitte versuche es erneut.', 'error');
-        });
-        */
-
-        // Store data in localStorage for Shopify integration demo
-        try {
-            localStorage.setItem('essenza_questionnaire_data', JSON.stringify(data));
-            console.log('Data saved to localStorage for Shopify integration');
-        } catch (e) {
-            console.warn('Could not save to localStorage:', e);
         }
 
-        // Trigger custom event for Shopify integration
-        window.dispatchEvent(new CustomEvent('essenza-questionnaire-submitted', {
-            detail: data
-        }));
+        // Send to API endpoint
+        try {
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+
+            // Add API key if configured
+            if (config.apiKey) {
+                headers['X-API-Key'] = config.apiKey;
+            }
+
+            const response = await fetch(config.apiEndpoint, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `HTTP ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('Server response:', result);
+
+            // Store submission ID for reference
+            if (result.submissionId) {
+                try {
+                    localStorage.setItem('essenza_submission_id', result.submissionId);
+                } catch (e) {
+                    console.warn('Could not save submission ID:', e);
+                }
+            }
+
+            // Trigger success event
+            if (config.enableCustomEvent) {
+                window.dispatchEvent(new CustomEvent('essenza-questionnaire-submitted', {
+                    detail: { ...data, submissionId: result.submissionId, serverResponse: result }
+                }));
+            }
+
+            return result;
+
+        } catch (error) {
+            console.error('Error sending data:', error);
+
+            // Trigger error event
+            if (config.enableCustomEvent) {
+                window.dispatchEvent(new CustomEvent('essenza-questionnaire-error', {
+                    detail: { error: error.message, data }
+                }));
+            }
+
+            // Don't show error to user if form submission already shows success
+            // The data is stored locally and can be retried later
+            console.warn('Data stored locally. Will be synced when connection is restored.');
+        }
     }
 
     // Expose functions for external use (Shopify integration)

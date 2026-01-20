@@ -6,12 +6,23 @@ Der Essenza Fragebogen ist ein mehrstufiger, benutzerfreundlicher Fragebogen fü
 
 ## Dateien
 
+### Frontend
 | Datei | Beschreibung |
 |-------|--------------|
 | `essenza-questionnaire.html` | Standalone HTML-Datei mit externen CSS/JS |
 | `essenza-styles.css` | CSS-Styling mit Bio-eta Branding |
 | `essenza-script.js` | JavaScript für Formularlogik |
 | `essenza-shopify-embed.html` | Selbstenthaltene Version für Shopify |
+
+### Backend (`essenza-backend/`)
+| Datei | Beschreibung |
+|-------|--------------|
+| `server.js` | Express Server mit API-Endpunkten |
+| `routes/questionnaire.js` | API-Routen für Fragebogen-Daten |
+| `routes/webhooks.js` | Shopify Webhook-Handler |
+| `services/shopify.js` | Shopify API Integration (Metafields) |
+| `services/email.js` | E-Mail-Benachrichtigungen |
+| `models/Questionnaire.js` | MongoDB Datenmodell |
 
 ## Features
 
@@ -118,24 +129,58 @@ window.addEventListener('essenza-questionnaire-submitted', function(e) {
 }
 ```
 
-### API-Anbindung
+### API-Anbindung (Backend)
 
-Für eine vollständige Integration empfehlen wir:
+Das Backend (`essenza-backend/`) bietet eine vollständige Lösung für:
 
-1. **Shopify App erstellen** mit einem Backend-Endpoint
-2. **Webhook konfigurieren** für neue Fragebogen-Einreichungen
-3. **Metafields nutzen** um Daten pro Kunde zu speichern
+1. **REST API** für Fragebogen-Einreichungen
+2. **Shopify Integration** mit automatischer Kunden-Erstellung und Metafields
+3. **Webhook Support** für Echtzeit-Updates
+4. **E-Mail-Benachrichtigungen** für Kunden und Admin
 
-```javascript
-// Beispiel: An Shopify App Proxy senden
-fetch('/apps/essenza/submit', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data)
-});
+#### Backend starten
+
+```bash
+cd essenza-backend
+npm install
+cp .env.example .env  # Konfiguration anpassen
+npm run dev
 ```
+
+#### Frontend konfigurieren
+
+```html
+<script>
+window.EssenzaConfig = {
+    apiEndpoint: 'https://your-backend.com/api/questionnaire',
+    apiKey: null,  // Optional für zusätzliche Sicherheit
+    enableLocalStorage: true,
+    enableCustomEvent: true
+};
+</script>
+<script src="essenza-script.js"></script>
+```
+
+#### API-Endpunkte
+
+| Methode | Endpunkt | Beschreibung |
+|---------|----------|--------------|
+| `POST` | `/api/questionnaire` | Fragebogen einreichen |
+| `GET` | `/api/questionnaire/:id` | Fragebogen abrufen |
+| `GET` | `/api/questionnaire/email/:email` | Nach E-Mail suchen |
+
+#### Shopify Metafields
+
+Die Fragebogen-Daten werden automatisch in Kunden-Metafields gespeichert:
+
+```liquid
+{% assign essenza = customer.metafields.essenza.questionnaire_data.value %}
+{% if essenza %}
+  <p>Kategorien: {{ essenza.kategorien | join: ', ' }}</p>
+{% endif %}
+```
+
+Siehe `essenza-backend/README.md` für die vollständige Backend-Dokumentation.
 
 ## Anpassungen
 
