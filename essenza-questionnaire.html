@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essenza Fragebogen - Bio-eta</title>
+    <link rel="stylesheet" href="essenza-styles.css">
+</head>
+<body>
+    <div class="essenza-container">
+        <!-- Header -->
+        <div class="essenza-header">
+            <div class="logo">
+                <span class="logo-text">Bio-eta</span>
+                <span class="product-name">Essenza</span>
+            </div>
+            <p class="tagline">Dein personalisierter Weg zu mehr Wohlbefinden</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-steps">
+                <div class="progress-step active" data-step="1">
+                    <span class="step-number">1</span>
+                    <span class="step-label">Persönliche Daten</span>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <span class="step-number">2</span>
+                    <span class="step-label">Kategorien</span>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Detailfragen</span>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <span class="step-number">4</span>
+                    <span class="step-label">Lebensstil</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <form id="essenza-form" class="essenza-form">
+
+            <!-- Step 1: Persönliche Angaben -->
+            <div class="form-step active" data-step="1">
+                <h2 class="step-title">Persönliche Angaben</h2>
+                <p class="step-description">Bitte gib deine persönlichen Daten ein, damit wir deine Essenza optimal auf dich abstimmen können.</p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="vorname">Vorname *</label>
+                        <input type="text" id="vorname" name="vorname" required placeholder="Dein Vorname">
+                    </div>
+                    <div class="form-group">
+                        <label for="nachname">Nachname *</label>
+                        <input type="text" id="nachname" name="nachname" required placeholder="Dein Nachname">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-Mail-Adresse *</label>
+                    <input type="email" id="email" name="email" required placeholder="deine@email.de">
+                </div>
+
+                <div class="form-group">
+                    <label>Geschlecht *</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="geschlecht" value="maennlich" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Männlich</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="geschlecht" value="weiblich">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Weiblich</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="geschlecht" value="divers">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Divers</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Schwangerschaftsfrage (nur bei weiblich) -->
+                <div class="form-group pregnancy-question hidden" id="pregnancy-group">
+                    <label>Kann eine Schwangerschaft ausgeschlossen werden? *</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="schwangerschaft" value="ja">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Ja, kann ausgeschlossen werden</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="schwangerschaft" value="nein">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Nein / Unsicher</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="adresse">Adresse *</label>
+                    <input type="text" id="strasse" name="strasse" required placeholder="Straße und Hausnummer">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group plz-group">
+                        <label for="plz">PLZ *</label>
+                        <input type="text" id="plz" name="plz" required placeholder="PLZ" maxlength="5">
+                    </div>
+                    <div class="form-group ort-group">
+                        <label for="ort">Ort *</label>
+                        <input type="text" id="ort" name="ort" required placeholder="Ort">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="groesse">Größe (cm) *</label>
+                        <input type="number" id="groesse" name="groesse" required min="100" max="250" placeholder="z.B. 175">
+                    </div>
+                    <div class="form-group">
+                        <label for="gewicht">Gewicht (kg) *</label>
+                        <input type="number" id="gewicht" name="gewicht" required min="30" max="300" placeholder="z.B. 70">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="aktivitaet">Ich würde meinen Lebensstil als aktiv beschreiben *</label>
+                    <p class="input-hint">1 = trifft gar nicht zu, 10 = sehr aktiv</p>
+                    <div class="slider-container">
+                        <input type="range" id="aktivitaet" name="aktivitaet" min="1" max="10" value="5" class="slider">
+                        <div class="slider-labels">
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                            <span>6</span>
+                            <span>7</span>
+                            <span>8</span>
+                            <span>9</span>
+                            <span>10</span>
+                        </div>
+                        <div class="slider-value" id="aktivitaet-value">5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Kategorieauswahl -->
+            <div class="form-step" data-step="2">
+                <h2 class="step-title">Deine Fokus-Bereiche</h2>
+                <p class="step-description">Wähle 3 bis 5 Kategorien aus, die du als deine größten Baustellen einschätzen würdest.</p>
+
+                <div class="category-grid" id="category-grid">
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="mentale_gesundheit">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
+                            </div>
+                            <span class="category-name">Mentale Gesundheit</span>
+                            <span class="category-desc">Konzentration, Gedächtnis, Stimmung</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="fitness">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6.5 6.5l11 11M6.5 17.5l11-11M12 2v4M12 18v4M2 12h4M18 12h4"/>
+                                </svg>
+                            </div>
+                            <span class="category-name">Fitness</span>
+                            <span class="category-desc">Sport, Regeneration, Leistung</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="stress_schlaf">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                                </svg>
+                            </div>
+                            <span class="category-name">Stress und Schlaf</span>
+                            <span class="category-desc">Entspannung, Schlafqualität</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="verdauung">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+                                </svg>
+                            </div>
+                            <span class="category-name">Verdauung</span>
+                            <span class="category-desc">Magen, Darm, Wohlbefinden</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="immunsystem">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                            </div>
+                            <span class="category-name">Immunsystem</span>
+                            <span class="category-desc">Abwehrkräfte, Gesundheit</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="haut_haare">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/>
+                                </svg>
+                            </div>
+                            <span class="category-name">Haut, Haare, Nägel</span>
+                            <span class="category-desc">Schönheit von innen</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="knochen_gelenke">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 4a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM6 4a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM18 16a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM6 16a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM6 8v8M18 8v8"/>
+                                </svg>
+                            </div>
+                            <span class="category-name">Knochen, Gelenke, Muskeln</span>
+                            <span class="category-desc">Beweglichkeit, Stabilität</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <p class="selection-counter">
+                    <span id="category-count">0</span> von 3-5 Kategorien ausgewählt
+                </p>
+            </div>
+
+            <!-- Step 3: Kategorie-spezifische Fragen -->
+            <div class="form-step" data-step="3">
+                <h2 class="step-title">Detailfragen</h2>
+                <p class="step-description">Beurteile, wie stark die folgenden Aussagen auf dich zutreffen.<br>1 = trifft überhaupt nicht zu, 10 = trifft komplett zu</p>
+
+                <!-- Mentale Gesundheit Fragen -->
+                <div class="category-questions hidden" id="questions-mentale_gesundheit">
+                    <h3 class="category-title">Mentale Gesundheit</h3>
+
+                    <div class="question-item">
+                        <label>Mir fällt es schwer, mich zu konzentrieren.</label>
+                        <div class="slider-container">
+                            <input type="range" name="mental_konzentration" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich vergesse manchmal Dinge, die ich erst kurz vorher erledigt habe.</label>
+                        <div class="slider-container">
+                            <input type="range" name="mental_vergessen" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich fühle mich häufig bereits nach dem Aufwachen müde.</label>
+                        <div class="slider-container">
+                            <input type="range" name="mental_muede" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>In letzter Zeit bin ich häufig genervt oder schlecht gelaunt.</label>
+                        <div class="slider-container">
+                            <input type="range" name="mental_laune" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fitness Fragen -->
+                <div class="category-questions hidden" id="questions-fitness">
+                    <h3 class="category-title">Fitness</h3>
+
+                    <div class="question-item">
+                        <label>Ich möchte sportlicher werden.</label>
+                        <div class="slider-container">
+                            <input type="range" name="fitness_sportlicher" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Nach dem Sport dauert es oft lange, bis ich mich wieder erholt habe.</label>
+                        <div class="slider-container">
+                            <input type="range" name="fitness_erholung" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich habe häufig Krämpfe oder Kopfschmerzen während oder nach einer sportlichen Aktivität.</label>
+                        <div class="slider-container">
+                            <input type="range" name="fitness_kraempfe" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Mir fällt es schwer, während des Trainings ausreichend Flüssigkeit zu mir zu nehmen.</label>
+                        <div class="slider-container">
+                            <input type="range" name="fitness_fluessigkeit" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich treibe mehrfach in der Woche Sport.</label>
+                        <div class="slider-container">
+                            <input type="range" name="fitness_haeufigkeit" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich bereite mich aktuell auf einen Wettkampf vor.</label>
+                        <div class="slider-container">
+                            <input type="range" name="fitness_wettkampf" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stress und Schlaf Fragen -->
+                <div class="category-questions hidden" id="questions-stress_schlaf">
+                    <h3 class="category-title">Stress und Schlaf</h3>
+
+                    <div class="question-item">
+                        <label>Ich habe Probleme mit dem Ein- oder Durchschlafen.</label>
+                        <div class="slider-container">
+                            <input type="range" name="schlaf_probleme" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich komme morgens nur schwer aus dem Bett.</label>
+                        <div class="slider-container">
+                            <input type="range" name="schlaf_aufstehen" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich bin in letzter Zeit vermehrt gestresst.</label>
+                        <div class="slider-container">
+                            <input type="range" name="stress_level" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Durch den Stress fühle ich mich häufig müde und ausgebrannt.</label>
+                        <div class="slider-container">
+                            <input type="range" name="stress_ausgebrannt" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Immunsystem Fragen -->
+                <div class="category-questions hidden" id="questions-immunsystem">
+                    <h3 class="category-title">Immunsystem</h3>
+
+                    <div class="question-item">
+                        <label>Ich werde in letzter Zeit häufig krank.</label>
+                        <div class="slider-container">
+                            <input type="range" name="immun_krank" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Nach einer Erkrankung komme ich nur schwer wieder auf die Beine.</label>
+                        <div class="slider-container">
+                            <input type="range" name="immun_erholung" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich habe das Gefühl, dass mein Immunsystem häufig überfordert ist.</label>
+                        <div class="slider-container">
+                            <input type="range" name="immun_ueberfordert" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Haut, Haare, Nägel Fragen -->
+                <div class="category-questions hidden" id="questions-haut_haare">
+                    <h3 class="category-title">Haut, Haare, Nägel und Augen</h3>
+
+                    <div class="question-item">
+                        <label>Ich habe eine trockene Haut.</label>
+                        <div class="slider-container">
+                            <input type="range" name="haut_trocken" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich habe stärkere Falten als andere in meinem Alter.</label>
+                        <div class="slider-container">
+                            <input type="range" name="haut_falten" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich habe eine unreine Haut.</label>
+                        <div class="slider-container">
+                            <input type="range" name="haut_unrein" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich habe dünne oder beschädigte Haare.</label>
+                        <div class="slider-container">
+                            <input type="range" name="haare_duenn" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich habe weiche und brüchige Nägel.</label>
+                        <div class="slider-container">
+                            <input type="range" name="naegel_bruechig" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Meine Augen sind häufig rot und gereizt.</label>
+                        <div class="slider-container">
+                            <input type="range" name="augen_gereizt" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verdauung Fragen -->
+                <div class="category-questions hidden" id="questions-verdauung">
+                    <h3 class="category-title">Verdauung</h3>
+
+                    <div class="question-item">
+                        <label>Ich fühle mich nach dem Essen häufig sehr voll.</label>
+                        <div class="slider-container">
+                            <input type="range" name="verdauung_voll" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Nach dem Essen habe ich häufig Magenprobleme.</label>
+                        <div class="slider-container">
+                            <input type="range" name="verdauung_magen" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich möchte zunehmen.</label>
+                        <div class="slider-container">
+                            <input type="range" name="verdauung_zunehmen" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich trinke nicht ausreichend.</label>
+                        <div class="slider-container">
+                            <input type="range" name="verdauung_trinken" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Knochen, Gelenke, Muskeln Fragen -->
+                <div class="category-questions hidden" id="questions-knochen_gelenke">
+                    <h3 class="category-title">Knochen, Gelenke und Muskeln</h3>
+
+                    <div class="question-item">
+                        <label>Ich habe häufig Gelenkschmerzen.</label>
+                        <div class="slider-container">
+                            <input type="range" name="knochen_gelenk" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich habe häufig Muskelverspannungen.</label>
+                        <div class="slider-container">
+                            <input type="range" name="knochen_verspannung" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-item">
+                        <label>Ich mache mir Sorgen um meine Knochengesundheit.</label>
+                        <div class="slider-container">
+                            <input type="range" name="knochen_sorgen" min="1" max="10" value="5" class="slider">
+                            <div class="slider-labels compact">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="no-categories-message hidden" id="no-categories-message">
+                    Bitte gehe zurück und wähle mindestens 3 Kategorien aus.
+                </p>
+            </div>
+
+            <!-- Step 4: Lebensstil-Fragen -->
+            <div class="form-step" data-step="4">
+                <h2 class="step-title">Lebensstil</h2>
+                <p class="step-description">Abschließend einige Fragen zu deinem Lebensstil und deiner Ernährung.</p>
+
+                <div class="lifestyle-section">
+                    <h3 class="section-subtitle">Gesundheit in der Familie</h3>
+
+                    <div class="form-group">
+                        <label for="familie_erkrankungen">In meiner Familie haben (mich eingeschlossen) wie viele Familienmitglieder Erkrankungen wie einen zu hohen Cholesterinspiegel, Bluthochdruck oder Typ-2 Diabetes?</label>
+                        <select id="familie_erkrankungen" name="familie_erkrankungen" required>
+                            <option value="">Bitte wählen...</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5+">5 oder mehr</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="familie_herzinfarkt">In meiner Familie hatten (mich eingeschlossen) wie viele Familienmitglieder schon einen Herzinfarkt oder Schlaganfall?</label>
+                        <select id="familie_herzinfarkt" name="familie_herzinfarkt" required>
+                            <option value="">Bitte wählen...</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4+">4 oder mehr</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="lifestyle-section">
+                    <h3 class="section-subtitle">Gewohnheiten</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zigaretten">Ich rauche täglich rund ... Zigaretten</label>
+                            <select id="zigaretten" name="zigaretten" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="0">0 (Nichtraucher)</option>
+                                <option value="1-5">1-5</option>
+                                <option value="6-10">6-10</option>
+                                <option value="11-20">11-20</option>
+                                <option value="20+">Mehr als 20</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kaffee">Ich trinke täglich ... Tassen Kaffee</label>
+                            <select id="kaffee" name="kaffee" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="0">0</option>
+                                <option value="1-2">1-2</option>
+                                <option value="3-4">3-4</option>
+                                <option value="5-6">5-6</option>
+                                <option value="7+">7 oder mehr</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="freien">Ich halte mich täglich ... Stunden im Freien auf</label>
+                            <select id="freien" name="freien" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="0-1">Weniger als 1 Stunde</option>
+                                <option value="1-2">1-2 Stunden</option>
+                                <option value="2-4">2-4 Stunden</option>
+                                <option value="4+">Mehr als 4 Stunden</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="alkohol">Ich trinke im Schnitt ... alkoholische Getränke pro Tag</label>
+                            <select id="alkohol" name="alkohol" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3-4">3-4</option>
+                                <option value="5+">5 oder mehr</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lifestyle-section">
+                    <h3 class="section-subtitle">Ernährung</h3>
+
+                    <div class="form-group">
+                        <label for="milch">Rund ... Prozent meiner Mahlzeiten enthalten Milchprodukte</label>
+                        <div class="slider-container">
+                            <input type="range" id="milch" name="milch" min="0" max="100" value="50" step="10" class="slider">
+                            <div class="slider-labels percentage">
+                                <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+                            </div>
+                            <div class="slider-value" id="milch-value">50%</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fisch">Ich esse wöchentlich ... Portionen Fisch oder Meeresfrüchte</label>
+                        <select id="fisch" name="fisch" required>
+                            <option value="">Bitte wählen...</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4+">4 oder mehr</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="obst_gemuese">Rund ... Prozent meiner Mahlzeiten enthalten Obst oder Gemüse</label>
+                        <div class="slider-container">
+                            <input type="range" id="obst_gemuese" name="obst_gemuese" min="0" max="100" value="50" step="10" class="slider">
+                            <div class="slider-labels percentage">
+                                <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+                            </div>
+                            <div class="slider-value" id="obst_gemuese-value">50%</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fleisch">Ich esse wöchentlich ... Portionen Fleisch oder Ei</label>
+                        <select id="fleisch" name="fleisch" required>
+                            <option value="">Bitte wählen...</option>
+                            <option value="0">0</option>
+                            <option value="1-3">1-3</option>
+                            <option value="4-7">4-7</option>
+                            <option value="8-14">8-14</option>
+                            <option value="14+">Mehr als 14</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="weizen">Rund ... Prozent meiner Mahlzeiten enthalten Weizen (z.B. Nudeln, Brot, Pizza, ...)</label>
+                        <div class="slider-container">
+                            <input type="range" id="weizen" name="weizen" min="0" max="100" value="50" step="10" class="slider">
+                            <div class="slider-labels percentage">
+                                <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+                            </div>
+                            <div class="slider-value" id="weizen-value">50%</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ballaststoffe">Rund ... Prozent meiner Mahlzeiten sind ballaststoffreich (z.B. Gemüse, Hülsenfrüchte, Vollkornprodukte, Nüsse, ...)</label>
+                        <div class="slider-container">
+                            <input type="range" id="ballaststoffe" name="ballaststoffe" min="0" max="100" value="50" step="10" class="slider">
+                            <div class="slider-labels percentage">
+                                <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+                            </div>
+                            <div class="slider-value" id="ballaststoffe-value">50%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="form-navigation">
+                <button type="button" class="btn btn-secondary" id="prev-btn" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                    Zurück
+                </button>
+                <button type="button" class="btn btn-primary" id="next-btn">
+                    Weiter
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </button>
+                <button type="submit" class="btn btn-success hidden" id="submit-btn">
+                    Fragebogen absenden
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12l5 5L20 7"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- Success Message -->
+        <div class="success-message hidden" id="success-message">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9 12l2 2 4-4"/>
+                </svg>
+            </div>
+            <h2>Vielen Dank!</h2>
+            <p>Dein Fragebogen wurde erfolgreich übermittelt. Wir werden deine Essenza basierend auf deinen Angaben zusammenstellen.</p>
+            <p class="success-note">Du erhältst in Kürze eine Bestätigung per E-Mail.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="essenza-footer">
+            <p>Bei Fragen kontaktiere uns unter <a href="mailto:info@bio-eta.de">info@bio-eta.de</a></p>
+            <p class="copyright">Bio-eta GmbH - Essenza</p>
+        </div>
+    </div>
+
+    <script src="essenza-script.js"></script>
+</body>
+</html>

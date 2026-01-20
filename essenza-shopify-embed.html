@@ -1,0 +1,1605 @@
+<!--
+  ESSENZA FRAGEBOGEN - Bio-eta
+  Shopify Embed Version
+
+  Integration Instructions:
+  1. Copy this entire code block
+  2. In Shopify Admin, go to Online Store > Pages
+  3. Create a new page or edit an existing one
+  4. Click "Show HTML" (<>) in the content editor
+  5. Paste this code
+  6. Save the page
+
+  Alternative: Add to a Shopify Section or Liquid template
+  ==================================================================================
+-->
+
+<style>
+/* =====================================================
+   ESSENZA QUESTIONNAIRE - Bio-eta (Embedded Styles)
+   ===================================================== */
+
+.essenza-embed-wrapper {
+    --primary-color: #2D5A27;
+    --primary-light: #4A7C43;
+    --primary-dark: #1E3D1A;
+    --secondary-color: #8FB573;
+    --accent-color: #C9A227;
+    --accent-light: #E8D48B;
+    --text-color: #2C3E2C;
+    --text-light: #5A6B5A;
+    --text-muted: #8A9B8A;
+    --border-color: #D4E0D4;
+    --background-light: #F7FAF7;
+    --background-white: #FFFFFF;
+    --success-color: #2D5A27;
+    --error-color: #C0392B;
+    --shadow-sm: 0 2px 4px rgba(45, 90, 39, 0.08);
+    --shadow-md: 0 4px 12px rgba(45, 90, 39, 0.12);
+    --shadow-lg: 0 8px 24px rgba(45, 90, 39, 0.16);
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+    --transition-slow: 0.4s ease;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    box-sizing: border-box;
+}
+
+.essenza-embed-wrapper *, .essenza-embed-wrapper *::before, .essenza-embed-wrapper *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.essenza-embed-wrapper .essenza-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--background-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.essenza-embed-wrapper .essenza-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.essenza-embed-wrapper .essenza-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 60%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.05);
+    transform: rotate(30deg);
+    pointer-events: none;
+}
+
+.essenza-embed-wrapper .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.essenza-embed-wrapper .logo-text {
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.essenza-embed-wrapper .product-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.essenza-embed-wrapper .tagline {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.essenza-embed-wrapper .progress-container {
+    padding: 25px 30px;
+    background: var(--background-light);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.essenza-embed-wrapper .progress-bar {
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.essenza-embed-wrapper .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 3px;
+    width: 25%;
+    transition: width var(--transition-slow);
+}
+
+.essenza-embed-wrapper .progress-steps {
+    display: flex;
+    justify-content: space-between;
+}
+
+.essenza-embed-wrapper .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.essenza-embed-wrapper .step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--border-color);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all var(--transition-normal);
+}
+
+.essenza-embed-wrapper .progress-step.active .step-number,
+.essenza-embed-wrapper .progress-step.completed .step-number {
+    background: var(--primary-color);
+    color: white;
+}
+
+.essenza-embed-wrapper .progress-step.completed .step-number {
+    background: var(--secondary-color);
+}
+
+.essenza-embed-wrapper .step-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    font-weight: 500;
+    transition: color var(--transition-normal);
+}
+
+.essenza-embed-wrapper .progress-step.active .step-label {
+    color: var(--primary-color);
+}
+
+.essenza-embed-wrapper .essenza-form {
+    padding: 35px 30px;
+}
+
+.essenza-embed-wrapper .form-step {
+    display: none;
+    animation: essenzaFadeIn var(--transition-normal);
+}
+
+.essenza-embed-wrapper .form-step.active {
+    display: block;
+}
+
+@keyframes essenzaFadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.essenza-embed-wrapper .step-title {
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.essenza-embed-wrapper .step-description {
+    color: var(--text-light);
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.essenza-embed-wrapper .form-group {
+    margin-bottom: 24px;
+}
+
+.essenza-embed-wrapper .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.essenza-embed-wrapper .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.essenza-embed-wrapper .plz-group {
+    max-width: 150px;
+}
+
+.essenza-embed-wrapper input[type="text"],
+.essenza-embed-wrapper input[type="email"],
+.essenza-embed-wrapper input[type="number"],
+.essenza-embed-wrapper select {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--background-white);
+    color: var(--text-color);
+    transition: all var(--transition-fast);
+    font-family: inherit;
+}
+
+.essenza-embed-wrapper input[type="text"]:focus,
+.essenza-embed-wrapper input[type="email"]:focus,
+.essenza-embed-wrapper input[type="number"]:focus,
+.essenza-embed-wrapper select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(45, 90, 39, 0.1);
+}
+
+.essenza-embed-wrapper input::placeholder {
+    color: var(--text-muted);
+}
+
+.essenza-embed-wrapper select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235A6B5A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    padding-right: 45px;
+}
+
+.essenza-embed-wrapper .input-hint {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.essenza-embed-wrapper .radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.essenza-embed-wrapper .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background: var(--background-white);
+}
+
+.essenza-embed-wrapper .radio-option:hover {
+    border-color: var(--primary-light);
+    background: var(--background-light);
+}
+
+.essenza-embed-wrapper .radio-option input[type="radio"] {
+    display: none;
+}
+
+.essenza-embed-wrapper .radio-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    position: relative;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.essenza-embed-wrapper .radio-custom::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 10px;
+    height: 10px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    transition: transform var(--transition-fast);
+}
+
+.essenza-embed-wrapper .radio-option input[type="radio"]:checked + .radio-custom {
+    border-color: var(--primary-color);
+}
+
+.essenza-embed-wrapper .radio-option input[type="radio"]:checked + .radio-custom::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.essenza-embed-wrapper .radio-label {
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+.essenza-embed-wrapper .slider-container {
+    position: relative;
+    padding: 10px 0;
+}
+
+.essenza-embed-wrapper .slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--border-color);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.essenza-embed-wrapper .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+}
+
+.essenza-embed-wrapper .slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+    box-shadow: var(--shadow-md);
+}
+
+.essenza-embed-wrapper .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding: 0 2px;
+}
+
+.essenza-embed-wrapper .slider-labels span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.essenza-embed-wrapper .slider-labels.compact span {
+    font-size: 0.7rem;
+}
+
+.essenza-embed-wrapper .slider-value {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.essenza-embed-wrapper .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.essenza-embed-wrapper .category-card {
+    position: relative;
+    display: block;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    background: var(--background-white);
+}
+
+.essenza-embed-wrapper .category-card:hover {
+    border-color: var(--primary-light);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.essenza-embed-wrapper .category-card input[type="checkbox"] {
+    display: none;
+}
+
+.essenza-embed-wrapper .category-card:has(input:checked) {
+    border-color: var(--primary-color);
+    background: rgba(45, 90, 39, 0.04);
+}
+
+.essenza-embed-wrapper .category-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+.essenza-embed-wrapper .category-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--primary-light);
+}
+
+.essenza-embed-wrapper .category-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.essenza-embed-wrapper .category-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+.essenza-embed-wrapper .category-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.essenza-embed-wrapper .checkmark {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    background: var(--background-white);
+    transition: all var(--transition-fast);
+}
+
+.essenza-embed-wrapper .category-card:has(input:checked) .checkmark {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.essenza-embed-wrapper .category-card:has(input:checked) .checkmark::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+}
+
+.essenza-embed-wrapper .selection-counter {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    padding: 15px;
+    background: var(--background-light);
+    border-radius: var(--radius-md);
+}
+
+.essenza-embed-wrapper #category-count {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.essenza-embed-wrapper .category-questions {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.essenza-embed-wrapper .category-questions:last-of-type {
+    border-bottom: none;
+}
+
+.essenza-embed-wrapper .category-title {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--secondary-color);
+    display: inline-block;
+}
+
+.essenza-embed-wrapper .question-item {
+    margin-bottom: 25px;
+}
+
+.essenza-embed-wrapper .question-item label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.essenza-embed-wrapper .lifestyle-section {
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.essenza-embed-wrapper .lifestyle-section:last-child {
+    border-bottom: none;
+}
+
+.essenza-embed-wrapper .section-subtitle {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.essenza-embed-wrapper .form-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 1px solid var(--border-color);
+}
+
+.essenza-embed-wrapper .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: inherit;
+}
+
+.essenza-embed-wrapper .btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.essenza-embed-wrapper .btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.essenza-embed-wrapper .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.essenza-embed-wrapper .btn-primary:disabled {
+    background: var(--border-color);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.essenza-embed-wrapper .btn-secondary {
+    background: var(--background-white);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+}
+
+.essenza-embed-wrapper .btn-secondary:hover:not(:disabled) {
+    border-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.essenza-embed-wrapper .btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.essenza-embed-wrapper .btn-success {
+    background: linear-gradient(135deg, var(--accent-color), #D4B52F);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.essenza-embed-wrapper .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.essenza-embed-wrapper .success-message {
+    text-align: center;
+    padding: 60px 40px;
+}
+
+.essenza-embed-wrapper .success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 25px;
+    color: var(--success-color);
+}
+
+.essenza-embed-wrapper .success-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.essenza-embed-wrapper .success-message h2 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.essenza-embed-wrapper .success-message p {
+    color: var(--text-light);
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+}
+
+.essenza-embed-wrapper .success-note {
+    font-size: 0.9rem !important;
+    color: var(--text-muted) !important;
+    margin-top: 20px !important;
+}
+
+.essenza-embed-wrapper .essenza-footer {
+    padding: 25px 30px;
+    background: var(--background-light);
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+}
+
+.essenza-embed-wrapper .essenza-footer p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+
+.essenza-embed-wrapper .essenza-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.essenza-embed-wrapper .hidden {
+    display: none !important;
+}
+
+.essenza-embed-wrapper .pregnancy-question {
+    background: var(--background-light);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.essenza-embed-wrapper .no-categories-message {
+    text-align: center;
+    padding: 40px;
+    background: var(--background-light);
+    border-radius: var(--radius-md);
+    color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+    .essenza-embed-wrapper .essenza-header { padding: 30px 20px; }
+    .essenza-embed-wrapper .product-name { font-size: 2rem; }
+    .essenza-embed-wrapper .progress-container { padding: 20px; }
+    .essenza-embed-wrapper .step-label { display: none; }
+    .essenza-embed-wrapper .essenza-form { padding: 25px 20px; }
+    .essenza-embed-wrapper .step-title { font-size: 1.4rem; }
+    .essenza-embed-wrapper .form-row { grid-template-columns: 1fr; }
+    .essenza-embed-wrapper .plz-group { max-width: none; }
+    .essenza-embed-wrapper .radio-group { flex-direction: column; }
+    .essenza-embed-wrapper .radio-option { width: 100%; }
+    .essenza-embed-wrapper .category-grid { grid-template-columns: 1fr 1fr; }
+    .essenza-embed-wrapper .form-navigation { flex-direction: column-reverse; }
+    .essenza-embed-wrapper .btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+    .essenza-embed-wrapper .product-name { font-size: 1.7rem; }
+    .essenza-embed-wrapper .step-number { width: 28px; height: 28px; font-size: 0.8rem; }
+    .essenza-embed-wrapper .essenza-form { padding: 20px 15px; }
+    .essenza-embed-wrapper .category-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="essenza-embed-wrapper">
+    <div class="essenza-container">
+        <!-- Header -->
+        <div class="essenza-header">
+            <div class="logo">
+                <span class="logo-text">Bio-eta</span>
+                <span class="product-name">Essenza</span>
+            </div>
+            <p class="tagline">Dein personalisierter Weg zu mehr Wohlbefinden</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="essenza-progress-fill"></div>
+            </div>
+            <div class="progress-steps">
+                <div class="progress-step active" data-step="1">
+                    <span class="step-number">1</span>
+                    <span class="step-label">Persönliche Daten</span>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <span class="step-number">2</span>
+                    <span class="step-label">Kategorien</span>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Detailfragen</span>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <span class="step-number">4</span>
+                    <span class="step-label">Lebensstil</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <form id="essenza-embed-form" class="essenza-form">
+
+            <!-- Step 1: Persönliche Angaben -->
+            <div class="form-step active" data-step="1">
+                <h2 class="step-title">Persönliche Angaben</h2>
+                <p class="step-description">Bitte gib deine persönlichen Daten ein, damit wir deine Essenza optimal auf dich abstimmen können.</p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="essenza-vorname">Vorname *</label>
+                        <input type="text" id="essenza-vorname" name="vorname" required placeholder="Dein Vorname">
+                    </div>
+                    <div class="form-group">
+                        <label for="essenza-nachname">Nachname *</label>
+                        <input type="text" id="essenza-nachname" name="nachname" required placeholder="Dein Nachname">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="essenza-email">E-Mail-Adresse *</label>
+                    <input type="email" id="essenza-email" name="email" required placeholder="deine@email.de">
+                </div>
+
+                <div class="form-group">
+                    <label>Geschlecht *</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="geschlecht" value="maennlich" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Männlich</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="geschlecht" value="weiblich">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Weiblich</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="geschlecht" value="divers">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Divers</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group pregnancy-question hidden" id="essenza-pregnancy-group">
+                    <label>Kann eine Schwangerschaft ausgeschlossen werden? *</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="schwangerschaft" value="ja">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Ja, kann ausgeschlossen werden</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="schwangerschaft" value="nein">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Nein / Unsicher</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="essenza-strasse">Adresse *</label>
+                    <input type="text" id="essenza-strasse" name="strasse" required placeholder="Straße und Hausnummer">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group plz-group">
+                        <label for="essenza-plz">PLZ *</label>
+                        <input type="text" id="essenza-plz" name="plz" required placeholder="PLZ" maxlength="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="essenza-ort">Ort *</label>
+                        <input type="text" id="essenza-ort" name="ort" required placeholder="Ort">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="essenza-groesse">Größe (cm) *</label>
+                        <input type="number" id="essenza-groesse" name="groesse" required min="100" max="250" placeholder="z.B. 175">
+                    </div>
+                    <div class="form-group">
+                        <label for="essenza-gewicht">Gewicht (kg) *</label>
+                        <input type="number" id="essenza-gewicht" name="gewicht" required min="30" max="300" placeholder="z.B. 70">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="essenza-aktivitaet">Ich würde meinen Lebensstil als aktiv beschreiben *</label>
+                    <p class="input-hint">1 = trifft gar nicht zu, 10 = sehr aktiv</p>
+                    <div class="slider-container">
+                        <input type="range" id="essenza-aktivitaet" name="aktivitaet" min="1" max="10" value="5" class="slider">
+                        <div class="slider-labels">
+                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                        </div>
+                        <div class="slider-value" id="essenza-aktivitaet-value">5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Kategorieauswahl -->
+            <div class="form-step" data-step="2">
+                <h2 class="step-title">Deine Fokus-Bereiche</h2>
+                <p class="step-description">Wähle 3 bis 5 Kategorien aus, die du als deine größten Baustellen einschätzen würdest.</p>
+
+                <div class="category-grid" id="essenza-category-grid">
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="mentale_gesundheit">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
+                            </div>
+                            <span class="category-name">Mentale Gesundheit</span>
+                            <span class="category-desc">Konzentration, Gedächtnis, Stimmung</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="fitness">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5l11 11M6.5 17.5l11-11M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+                            </div>
+                            <span class="category-name">Fitness</span>
+                            <span class="category-desc">Sport, Regeneration, Leistung</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="stress_schlaf">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                            </div>
+                            <span class="category-name">Stress und Schlaf</span>
+                            <span class="category-desc">Entspannung, Schlafqualität</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="verdauung">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+                            </div>
+                            <span class="category-name">Verdauung</span>
+                            <span class="category-desc">Magen, Darm, Wohlbefinden</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="immunsystem">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <span class="category-name">Immunsystem</span>
+                            <span class="category-desc">Abwehrkräfte, Gesundheit</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="haut_haare">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
+                            </div>
+                            <span class="category-name">Haut, Haare, Nägel</span>
+                            <span class="category-desc">Schönheit von innen</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="category-card">
+                        <input type="checkbox" name="kategorien" value="knochen_gelenke">
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 4a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM6 4a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM18 16a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM6 16a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM6 8v8M18 8v8"/></svg>
+                            </div>
+                            <span class="category-name">Knochen, Gelenke, Muskeln</span>
+                            <span class="category-desc">Beweglichkeit, Stabilität</span>
+                        </div>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <p class="selection-counter">
+                    <span id="essenza-category-count">0</span> von 3-5 Kategorien ausgewählt
+                </p>
+            </div>
+
+            <!-- Step 3: Kategorie-spezifische Fragen -->
+            <div class="form-step" data-step="3">
+                <h2 class="step-title">Detailfragen</h2>
+                <p class="step-description">Beurteile, wie stark die folgenden Aussagen auf dich zutreffen.<br>1 = trifft überhaupt nicht zu, 10 = trifft komplett zu</p>
+
+                <!-- Mentale Gesundheit -->
+                <div class="category-questions hidden" id="essenza-questions-mentale_gesundheit">
+                    <h3 class="category-title">Mentale Gesundheit</h3>
+                    <div class="question-item">
+                        <label>Mir fällt es schwer, mich zu konzentrieren.</label>
+                        <div class="slider-container"><input type="range" name="mental_konzentration" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich vergesse manchmal Dinge, die ich erst kurz vorher erledigt habe.</label>
+                        <div class="slider-container"><input type="range" name="mental_vergessen" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich fühle mich häufig bereits nach dem Aufwachen müde.</label>
+                        <div class="slider-container"><input type="range" name="mental_muede" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>In letzter Zeit bin ich häufig genervt oder schlecht gelaunt.</label>
+                        <div class="slider-container"><input type="range" name="mental_laune" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                </div>
+
+                <!-- Fitness -->
+                <div class="category-questions hidden" id="essenza-questions-fitness">
+                    <h3 class="category-title">Fitness</h3>
+                    <div class="question-item">
+                        <label>Ich möchte sportlicher werden.</label>
+                        <div class="slider-container"><input type="range" name="fitness_sportlicher" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Nach dem Sport dauert es oft lange, bis ich mich wieder erholt habe.</label>
+                        <div class="slider-container"><input type="range" name="fitness_erholung" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich habe häufig Krämpfe oder Kopfschmerzen während oder nach einer sportlichen Aktivität.</label>
+                        <div class="slider-container"><input type="range" name="fitness_kraempfe" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Mir fällt es schwer, während des Trainings ausreichend Flüssigkeit zu mir zu nehmen.</label>
+                        <div class="slider-container"><input type="range" name="fitness_fluessigkeit" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich treibe mehrfach in der Woche Sport.</label>
+                        <div class="slider-container"><input type="range" name="fitness_haeufigkeit" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich bereite mich aktuell auf einen Wettkampf vor.</label>
+                        <div class="slider-container"><input type="range" name="fitness_wettkampf" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                </div>
+
+                <!-- Stress und Schlaf -->
+                <div class="category-questions hidden" id="essenza-questions-stress_schlaf">
+                    <h3 class="category-title">Stress und Schlaf</h3>
+                    <div class="question-item">
+                        <label>Ich habe Probleme mit dem Ein- oder Durchschlafen.</label>
+                        <div class="slider-container"><input type="range" name="schlaf_probleme" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich komme morgens nur schwer aus dem Bett.</label>
+                        <div class="slider-container"><input type="range" name="schlaf_aufstehen" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich bin in letzter Zeit vermehrt gestresst.</label>
+                        <div class="slider-container"><input type="range" name="stress_level" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Durch den Stress fühle ich mich häufig müde und ausgebrannt.</label>
+                        <div class="slider-container"><input type="range" name="stress_ausgebrannt" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                </div>
+
+                <!-- Immunsystem -->
+                <div class="category-questions hidden" id="essenza-questions-immunsystem">
+                    <h3 class="category-title">Immunsystem</h3>
+                    <div class="question-item">
+                        <label>Ich werde in letzter Zeit häufig krank.</label>
+                        <div class="slider-container"><input type="range" name="immun_krank" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Nach einer Erkrankung komme ich nur schwer wieder auf die Beine.</label>
+                        <div class="slider-container"><input type="range" name="immun_erholung" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich habe das Gefühl, dass mein Immunsystem häufig überfordert ist.</label>
+                        <div class="slider-container"><input type="range" name="immun_ueberfordert" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                </div>
+
+                <!-- Haut, Haare, Nägel -->
+                <div class="category-questions hidden" id="essenza-questions-haut_haare">
+                    <h3 class="category-title">Haut, Haare, Nägel und Augen</h3>
+                    <div class="question-item">
+                        <label>Ich habe eine trockene Haut.</label>
+                        <div class="slider-container"><input type="range" name="haut_trocken" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich habe stärkere Falten als andere in meinem Alter.</label>
+                        <div class="slider-container"><input type="range" name="haut_falten" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich habe eine unreine Haut.</label>
+                        <div class="slider-container"><input type="range" name="haut_unrein" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich habe dünne oder beschädigte Haare.</label>
+                        <div class="slider-container"><input type="range" name="haare_duenn" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich habe weiche und brüchige Nägel.</label>
+                        <div class="slider-container"><input type="range" name="naegel_bruechig" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Meine Augen sind häufig rot und gereizt.</label>
+                        <div class="slider-container"><input type="range" name="augen_gereizt" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                </div>
+
+                <!-- Verdauung -->
+                <div class="category-questions hidden" id="essenza-questions-verdauung">
+                    <h3 class="category-title">Verdauung</h3>
+                    <div class="question-item">
+                        <label>Ich fühle mich nach dem Essen häufig sehr voll.</label>
+                        <div class="slider-container"><input type="range" name="verdauung_voll" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Nach dem Essen habe ich häufig Magenprobleme.</label>
+                        <div class="slider-container"><input type="range" name="verdauung_magen" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich möchte zunehmen.</label>
+                        <div class="slider-container"><input type="range" name="verdauung_zunehmen" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich trinke nicht ausreichend.</label>
+                        <div class="slider-container"><input type="range" name="verdauung_trinken" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                </div>
+
+                <!-- Knochen, Gelenke, Muskeln -->
+                <div class="category-questions hidden" id="essenza-questions-knochen_gelenke">
+                    <h3 class="category-title">Knochen, Gelenke und Muskeln</h3>
+                    <div class="question-item">
+                        <label>Ich habe häufig Gelenkschmerzen.</label>
+                        <div class="slider-container"><input type="range" name="knochen_gelenk" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich habe häufig Muskelverspannungen.</label>
+                        <div class="slider-container"><input type="range" name="knochen_verspannung" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                    <div class="question-item">
+                        <label>Ich mache mir Sorgen um meine Knochengesundheit.</label>
+                        <div class="slider-container"><input type="range" name="knochen_sorgen" min="1" max="10" value="5" class="slider"><div class="slider-labels compact"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+                    </div>
+                </div>
+
+                <p class="no-categories-message hidden" id="essenza-no-categories-message">
+                    Bitte gehe zurück und wähle mindestens 3 Kategorien aus.
+                </p>
+            </div>
+
+            <!-- Step 4: Lebensstil-Fragen -->
+            <div class="form-step" data-step="4">
+                <h2 class="step-title">Lebensstil</h2>
+                <p class="step-description">Abschließend einige Fragen zu deinem Lebensstil und deiner Ernährung.</p>
+
+                <div class="lifestyle-section">
+                    <h3 class="section-subtitle">Gesundheit in der Familie</h3>
+                    <div class="form-group">
+                        <label for="essenza-familie_erkrankungen">In meiner Familie haben (mich eingeschlossen) wie viele Familienmitglieder Erkrankungen wie einen zu hohen Cholesterinspiegel, Bluthochdruck oder Typ-2 Diabetes?</label>
+                        <select id="essenza-familie_erkrankungen" name="familie_erkrankungen" required>
+                            <option value="">Bitte wählen...</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5+">5 oder mehr</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="essenza-familie_herzinfarkt">In meiner Familie hatten (mich eingeschlossen) wie viele Familienmitglieder schon einen Herzinfarkt oder Schlaganfall?</label>
+                        <select id="essenza-familie_herzinfarkt" name="familie_herzinfarkt" required>
+                            <option value="">Bitte wählen...</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4+">4 oder mehr</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="lifestyle-section">
+                    <h3 class="section-subtitle">Gewohnheiten</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="essenza-zigaretten">Ich rauche täglich rund ... Zigaretten</label>
+                            <select id="essenza-zigaretten" name="zigaretten" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="0">0 (Nichtraucher)</option>
+                                <option value="1-5">1-5</option>
+                                <option value="6-10">6-10</option>
+                                <option value="11-20">11-20</option>
+                                <option value="20+">Mehr als 20</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="essenza-kaffee">Ich trinke täglich ... Tassen Kaffee</label>
+                            <select id="essenza-kaffee" name="kaffee" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="0">0</option>
+                                <option value="1-2">1-2</option>
+                                <option value="3-4">3-4</option>
+                                <option value="5-6">5-6</option>
+                                <option value="7+">7 oder mehr</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="essenza-freien">Ich halte mich täglich ... Stunden im Freien auf</label>
+                            <select id="essenza-freien" name="freien" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="0-1">Weniger als 1 Stunde</option>
+                                <option value="1-2">1-2 Stunden</option>
+                                <option value="2-4">2-4 Stunden</option>
+                                <option value="4+">Mehr als 4 Stunden</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="essenza-alkohol">Ich trinke im Schnitt ... alkoholische Getränke pro Tag</label>
+                            <select id="essenza-alkohol" name="alkohol" required>
+                                <option value="">Bitte wählen...</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3-4">3-4</option>
+                                <option value="5+">5 oder mehr</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lifestyle-section">
+                    <h3 class="section-subtitle">Ernährung</h3>
+                    <div class="form-group">
+                        <label for="essenza-milch">Rund ... Prozent meiner Mahlzeiten enthalten Milchprodukte</label>
+                        <div class="slider-container">
+                            <input type="range" id="essenza-milch" name="milch" min="0" max="100" value="50" step="10" class="slider">
+                            <div class="slider-labels percentage"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+                            <div class="slider-value" id="essenza-milch-value">50%</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="essenza-fisch">Ich esse wöchentlich ... Portionen Fisch oder Meeresfrüchte</label>
+                        <select id="essenza-fisch" name="fisch" required>
+                            <option value="">Bitte wählen...</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4+">4 oder mehr</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="essenza-obst_gemuese">Rund ... Prozent meiner Mahlzeiten enthalten Obst oder Gemüse</label>
+                        <div class="slider-container">
+                            <input type="range" id="essenza-obst_gemuese" name="obst_gemuese" min="0" max="100" value="50" step="10" class="slider">
+                            <div class="slider-labels percentage"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+                            <div class="slider-value" id="essenza-obst_gemuese-value">50%</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="essenza-fleisch">Ich esse wöchentlich ... Portionen Fleisch oder Ei</label>
+                        <select id="essenza-fleisch" name="fleisch" required>
+                            <option value="">Bitte wählen...</option>
+                            <option value="0">0</option>
+                            <option value="1-3">1-3</option>
+                            <option value="4-7">4-7</option>
+                            <option value="8-14">8-14</option>
+                            <option value="14+">Mehr als 14</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="essenza-weizen">Rund ... Prozent meiner Mahlzeiten enthalten Weizen (z.B. Nudeln, Brot, Pizza, ...)</label>
+                        <div class="slider-container">
+                            <input type="range" id="essenza-weizen" name="weizen" min="0" max="100" value="50" step="10" class="slider">
+                            <div class="slider-labels percentage"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+                            <div class="slider-value" id="essenza-weizen-value">50%</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="essenza-ballaststoffe">Rund ... Prozent meiner Mahlzeiten sind ballaststoffreich (z.B. Gemüse, Hülsenfrüchte, Vollkornprodukte, Nüsse, ...)</label>
+                        <div class="slider-container">
+                            <input type="range" id="essenza-ballaststoffe" name="ballaststoffe" min="0" max="100" value="50" step="10" class="slider">
+                            <div class="slider-labels percentage"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+                            <div class="slider-value" id="essenza-ballaststoffe-value">50%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="form-navigation">
+                <button type="button" class="btn btn-secondary" id="essenza-prev-btn" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                    Zurück
+                </button>
+                <button type="button" class="btn btn-primary" id="essenza-next-btn">
+                    Weiter
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+                <button type="submit" class="btn btn-success hidden" id="essenza-submit-btn">
+                    Fragebogen absenden
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- Success Message -->
+        <div class="success-message hidden" id="essenza-success-message">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+            <h2>Vielen Dank!</h2>
+            <p>Dein Fragebogen wurde erfolgreich übermittelt. Wir werden deine Essenza basierend auf deinen Angaben zusammenstellen.</p>
+            <p class="success-note">Du erhältst in Kürze eine Bestätigung per E-Mail.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="essenza-footer">
+            <p>Bei Fragen kontaktiere uns unter <a href="mailto:info@bio-eta.de">info@bio-eta.de</a></p>
+            <p class="copyright">Bio-eta GmbH - Essenza</p>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // Scoped JavaScript for Shopify embed
+    const wrapper = document.querySelector('.essenza-embed-wrapper');
+    const form = wrapper.querySelector('#essenza-embed-form');
+    const formSteps = wrapper.querySelectorAll('.form-step');
+    const progressSteps = wrapper.querySelectorAll('.progress-step');
+    const progressFill = wrapper.querySelector('#essenza-progress-fill');
+    const prevBtn = wrapper.querySelector('#essenza-prev-btn');
+    const nextBtn = wrapper.querySelector('#essenza-next-btn');
+    const submitBtn = wrapper.querySelector('#essenza-submit-btn');
+    const successMessage = wrapper.querySelector('#essenza-success-message');
+
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    const categoryQuestionMap = {
+        'mentale_gesundheit': 'essenza-questions-mentale_gesundheit',
+        'fitness': 'essenza-questions-fitness',
+        'stress_schlaf': 'essenza-questions-stress_schlaf',
+        'verdauung': 'essenza-questions-verdauung',
+        'immunsystem': 'essenza-questions-immunsystem',
+        'haut_haare': 'essenza-questions-haut_haare',
+        'knochen_gelenke': 'essenza-questions-knochen_gelenke'
+    };
+
+    // Initialize
+    init();
+
+    function init() {
+        setupEventListeners();
+        updateProgress();
+        initSliders();
+    }
+
+    function setupEventListeners() {
+        prevBtn.addEventListener('click', goToPrevStep);
+        nextBtn.addEventListener('click', goToNextStep);
+        form.addEventListener('submit', handleSubmit);
+
+        const genderRadios = wrapper.querySelectorAll('input[name="geschlecht"]');
+        genderRadios.forEach(radio => radio.addEventListener('change', handleGenderChange));
+
+        const categoryCheckboxes = wrapper.querySelectorAll('input[name="kategorien"]');
+        categoryCheckboxes.forEach(checkbox => checkbox.addEventListener('change', handleCategoryChange));
+
+        setupSliderListeners();
+    }
+
+    function setupSliderListeners() {
+        const aktivitaetSlider = wrapper.querySelector('#essenza-aktivitaet');
+        const aktivitaetValue = wrapper.querySelector('#essenza-aktivitaet-value');
+        if (aktivitaetSlider && aktivitaetValue) {
+            aktivitaetSlider.addEventListener('input', function() {
+                aktivitaetValue.textContent = this.value;
+                updateSliderTrack(this);
+            });
+        }
+
+        const percentageSliders = ['milch', 'obst_gemuese', 'weizen', 'ballaststoffe'];
+        percentageSliders.forEach(sliderId => {
+            const slider = wrapper.querySelector('#essenza-' + sliderId);
+            const valueDisplay = wrapper.querySelector('#essenza-' + sliderId + '-value');
+            if (slider && valueDisplay) {
+                slider.addEventListener('input', function() {
+                    valueDisplay.textContent = this.value + '%';
+                    updateSliderTrack(this);
+                });
+            }
+        });
+
+        wrapper.querySelectorAll('.slider').forEach(slider => {
+            slider.addEventListener('input', function() { updateSliderTrack(this); });
+            updateSliderTrack(slider);
+        });
+    }
+
+    function updateSliderTrack(slider) {
+        const min = slider.min || 0;
+        const max = slider.max || 100;
+        const value = slider.value;
+        const percentage = ((value - min) / (max - min)) * 100;
+        slider.style.background = 'linear-gradient(to right, #2D5A27 0%, #4A7C43 ' + percentage + '%, #D4E0D4 ' + percentage + '%, #D4E0D4 100%)';
+    }
+
+    function initSliders() {
+        wrapper.querySelectorAll('.slider').forEach(slider => updateSliderTrack(slider));
+    }
+
+    function handleGenderChange(e) {
+        const pregnancyGroup = wrapper.querySelector('#essenza-pregnancy-group');
+        const pregnancyRadios = wrapper.querySelectorAll('input[name="schwangerschaft"]');
+        if (e.target.value === 'weiblich') {
+            pregnancyGroup.classList.remove('hidden');
+            pregnancyRadios.forEach(radio => radio.required = true);
+        } else {
+            pregnancyGroup.classList.add('hidden');
+            pregnancyRadios.forEach(radio => { radio.required = false; radio.checked = false; });
+        }
+    }
+
+    function handleCategoryChange() {
+        const checkboxes = wrapper.querySelectorAll('input[name="kategorien"]:checked');
+        const count = checkboxes.length;
+        const countDisplay = wrapper.querySelector('#essenza-category-count');
+        if (countDisplay) countDisplay.textContent = count;
+        if (currentStep === 2) nextBtn.disabled = count < 3 || count > 5;
+    }
+
+    function updateCategoryQuestions() {
+        const selectedCategories = Array.from(wrapper.querySelectorAll('input[name="kategorien"]:checked')).map(cb => cb.value);
+        Object.values(categoryQuestionMap).forEach(questionId => {
+            const questionSection = wrapper.querySelector('#' + questionId);
+            if (questionSection) questionSection.classList.add('hidden');
+        });
+        selectedCategories.forEach(category => {
+            const questionId = categoryQuestionMap[category];
+            const questionSection = wrapper.querySelector('#' + questionId);
+            if (questionSection) questionSection.classList.remove('hidden');
+        });
+        const noCategoriesMsg = wrapper.querySelector('#essenza-no-categories-message');
+        if (noCategoriesMsg) {
+            if (selectedCategories.length === 0) noCategoriesMsg.classList.remove('hidden');
+            else noCategoriesMsg.classList.add('hidden');
+        }
+    }
+
+    function goToNextStep() {
+        if (!validateCurrentStep()) return;
+        if (currentStep === 2) updateCategoryQuestions();
+        if (currentStep < totalSteps) {
+            currentStep++;
+            updateFormStep();
+            updateProgress();
+            scrollToTop();
+        }
+    }
+
+    function goToPrevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            updateFormStep();
+            updateProgress();
+            scrollToTop();
+        }
+    }
+
+    function updateFormStep() {
+        formSteps.forEach(step => {
+            step.classList.remove('active');
+            if (parseInt(step.dataset.step) === currentStep) step.classList.add('active');
+        });
+        prevBtn.disabled = currentStep === 1;
+        if (currentStep === totalSteps) {
+            nextBtn.classList.add('hidden');
+            submitBtn.classList.remove('hidden');
+        } else {
+            nextBtn.classList.remove('hidden');
+            submitBtn.classList.add('hidden');
+        }
+        if (currentStep === 2) handleCategoryChange();
+    }
+
+    function updateProgress() {
+        const progressPercentage = (currentStep / totalSteps) * 100;
+        progressFill.style.width = progressPercentage + '%';
+        progressSteps.forEach((step, index) => {
+            const stepNum = index + 1;
+            step.classList.remove('active', 'completed');
+            if (stepNum === currentStep) step.classList.add('active');
+            else if (stepNum < currentStep) step.classList.add('completed');
+        });
+    }
+
+    function validateCurrentStep() {
+        const currentFormStep = wrapper.querySelector('.form-step[data-step="' + currentStep + '"]');
+
+        if (currentStep === 1) {
+            const requiredFields = currentFormStep.querySelectorAll('input[required], select[required]');
+            let isValid = true;
+            requiredFields.forEach(field => {
+                if (field.name === 'schwangerschaft') {
+                    const pregnancyGroup = wrapper.querySelector('#essenza-pregnancy-group');
+                    if (pregnancyGroup.classList.contains('hidden')) return;
+                }
+                if (field.type === 'radio') {
+                    const radioGroup = wrapper.querySelectorAll('input[name="' + field.name + '"]');
+                    const isChecked = Array.from(radioGroup).some(r => r.checked);
+                    if (!isChecked) isValid = false;
+                } else if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#C0392B';
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            const emailField = wrapper.querySelector('#essenza-email');
+            if (emailField && emailField.value) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(emailField.value)) {
+                    isValid = false;
+                    emailField.style.borderColor = '#C0392B';
+                }
+            }
+            if (!isValid) alert('Bitte fülle alle Pflichtfelder aus.');
+            return isValid;
+        }
+
+        if (currentStep === 2) {
+            const selectedCategories = wrapper.querySelectorAll('input[name="kategorien"]:checked');
+            if (selectedCategories.length < 3 || selectedCategories.length > 5) {
+                alert('Bitte wähle 3 bis 5 Kategorien aus.');
+                return false;
+            }
+            return true;
+        }
+
+        return true;
+    }
+
+    function scrollToTop() {
+        wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (!validateCurrentStep()) return;
+
+        const formData = new FormData(form);
+        const data = {
+            personal: {
+                vorname: formData.get('vorname'),
+                nachname: formData.get('nachname'),
+                email: formData.get('email'),
+                geschlecht: formData.get('geschlecht'),
+                schwangerschaft: formData.get('schwangerschaft') || 'nicht_zutreffend',
+                adresse: { strasse: formData.get('strasse'), plz: formData.get('plz'), ort: formData.get('ort') },
+                groesse: formData.get('groesse'),
+                gewicht: formData.get('gewicht'),
+                aktivitaet: formData.get('aktivitaet')
+            },
+            kategorien: formData.getAll('kategorien'),
+            lebensstil: {
+                familie_erkrankungen: formData.get('familie_erkrankungen'),
+                familie_herzinfarkt: formData.get('familie_herzinfarkt'),
+                zigaretten: formData.get('zigaretten'),
+                kaffee: formData.get('kaffee'),
+                freien: formData.get('freien'),
+                alkohol: formData.get('alkohol'),
+                ernaehrung: {
+                    milch: formData.get('milch'),
+                    fisch: formData.get('fisch'),
+                    obst_gemuese: formData.get('obst_gemuese'),
+                    fleisch: formData.get('fleisch'),
+                    weizen: formData.get('weizen'),
+                    ballaststoffe: formData.get('ballaststoffe')
+                }
+            },
+            timestamp: new Date().toISOString()
+        };
+
+        console.log('Essenza Questionnaire Data:', data);
+
+        // Store in localStorage
+        try {
+            localStorage.setItem('essenza_questionnaire_data', JSON.stringify(data));
+        } catch (e) {
+            console.warn('Could not save to localStorage:', e);
+        }
+
+        // Trigger custom event for Shopify integration
+        window.dispatchEvent(new CustomEvent('essenza-questionnaire-submitted', { detail: data }));
+
+        // Show success message
+        form.classList.add('hidden');
+        wrapper.querySelector('.progress-container').classList.add('hidden');
+        successMessage.classList.remove('hidden');
+        successMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Expose API for Shopify
+    window.EssenzaQuestionnaire = {
+        getData: function() { return JSON.parse(localStorage.getItem('essenza_questionnaire_data') || '{}'); },
+        resetForm: function() {
+            form.reset();
+            currentStep = 1;
+            updateFormStep();
+            updateProgress();
+            form.classList.remove('hidden');
+            wrapper.querySelector('.progress-container').classList.remove('hidden');
+            successMessage.classList.add('hidden');
+            scrollToTop();
+        }
+    };
+})();
+</script>
