@@ -1,0 +1,1088 @@
+{% comment %}
+  =====================================================
+  ESSENZA FRAGEBOGEN - Bio-eta
+  Shopify Native Version (ohne externen Server)
+
+  Installation:
+  1. Kopiere diese Datei nach: sections/essenza-questionnaire.liquid
+  2. Füge in deinem Template ein: {% section 'essenza-questionnaire' %}
+  3. Oder nutze den Theme Editor: "Add section" → "Essenza Questionnaire"
+  =====================================================
+{% endcomment %}
+
+{{ 'essenza-native.css' | asset_url | stylesheet_tag }}
+
+<div class="essenza-wrapper" id="essenza-app" data-customer-logged-in="{{ customer.id | default: false }}" data-customer-id="{{ customer.id }}">
+  <div class="essenza-container">
+
+    <!-- Header -->
+    <div class="essenza-header">
+      <div class="logo">
+        <span class="logo-text">Bio-eta</span>
+        <span class="product-name">Essenza</span>
+      </div>
+      <p class="tagline">Dein personalisierter Weg zu mehr Wohlbefinden</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container" id="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 25%;"></div>
+      </div>
+      <div class="progress-steps">
+        <div class="progress-step active" data-step="1">
+          <span class="step-number">1</span>
+          <span class="step-label">Persönliche Daten</span>
+        </div>
+        <div class="progress-step" data-step="2">
+          <span class="step-number">2</span>
+          <span class="step-label">Kategorien</span>
+        </div>
+        <div class="progress-step" data-step="3">
+          <span class="step-number">3</span>
+          <span class="step-label">Detailfragen</span>
+        </div>
+        <div class="progress-step" data-step="4">
+          <span class="step-number">4</span>
+          <span class="step-label">Lebensstil</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form id="essenza-form" class="essenza-form">
+
+      <!-- Step 1: Persönliche Angaben -->
+      <div class="form-step active" data-step="1">
+        <h2 class="step-title">Persönliche Angaben</h2>
+        <p class="step-description">Bitte gib deine persönlichen Daten ein, damit wir deine Essenza optimal auf dich abstimmen können.</p>
+
+        {% if customer %}
+          <div class="customer-info-box">
+            <p>Hallo {{ customer.first_name }}! Einige Daten wurden automatisch ausgefüllt.</p>
+          </div>
+        {% endif %}
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="vorname">Vorname *</label>
+            <input type="text" id="vorname" name="vorname" required placeholder="Dein Vorname" value="{{ customer.first_name | default: '' }}">
+          </div>
+          <div class="form-group">
+            <label for="nachname">Nachname *</label>
+            <input type="text" id="nachname" name="nachname" required placeholder="Dein Nachname" value="{{ customer.last_name | default: '' }}">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-Mail-Adresse *</label>
+          <input type="email" id="email" name="email" required placeholder="deine@email.de" value="{{ customer.email | default: '' }}">
+        </div>
+
+        <div class="form-group">
+          <label>Geschlecht *</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="geschlecht" value="maennlich" required>
+              <span class="radio-custom"></span>
+              <span class="radio-label">Männlich</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="geschlecht" value="weiblich">
+              <span class="radio-custom"></span>
+              <span class="radio-label">Weiblich</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="geschlecht" value="divers">
+              <span class="radio-custom"></span>
+              <span class="radio-label">Divers</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group pregnancy-question hidden" id="pregnancy-group">
+          <label>Kann eine Schwangerschaft ausgeschlossen werden? *</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="schwangerschaft" value="ja">
+              <span class="radio-custom"></span>
+              <span class="radio-label">Ja, kann ausgeschlossen werden</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="schwangerschaft" value="nein">
+              <span class="radio-custom"></span>
+              <span class="radio-label">Nein / Unsicher</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="strasse">Adresse *</label>
+          <input type="text" id="strasse" name="strasse" required placeholder="Straße und Hausnummer" value="{{ customer.default_address.address1 | default: '' }}">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group plz-group">
+            <label for="plz">PLZ *</label>
+            <input type="text" id="plz" name="plz" required placeholder="PLZ" maxlength="5" value="{{ customer.default_address.zip | default: '' }}">
+          </div>
+          <div class="form-group ort-group">
+            <label for="ort">Ort *</label>
+            <input type="text" id="ort" name="ort" required placeholder="Ort" value="{{ customer.default_address.city | default: '' }}">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="groesse">Größe (cm) *</label>
+            <input type="number" id="groesse" name="groesse" required min="100" max="250" placeholder="z.B. 175">
+          </div>
+          <div class="form-group">
+            <label for="gewicht">Gewicht (kg) *</label>
+            <input type="number" id="gewicht" name="gewicht" required min="30" max="300" placeholder="z.B. 70">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="aktivitaet">Ich würde meinen Lebensstil als aktiv beschreiben *</label>
+          <p class="input-hint">1 = trifft gar nicht zu, 10 = sehr aktiv</p>
+          <div class="slider-container">
+            <input type="range" id="aktivitaet" name="aktivitaet" min="1" max="10" value="5" class="slider">
+            <div class="slider-labels">
+              <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+            </div>
+            <div class="slider-value" id="aktivitaet-value">5</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Kategorieauswahl -->
+      <div class="form-step" data-step="2">
+        <h2 class="step-title">Deine Fokus-Bereiche</h2>
+        <p class="step-description">Wähle 3 bis 5 Kategorien aus, die du als deine größten Baustellen einschätzen würdest.</p>
+
+        <div class="category-grid">
+          <label class="category-card">
+            <input type="checkbox" name="kategorien" value="mentale_gesundheit">
+            <div class="category-content">
+              <div class="category-icon">{% render 'icon-brain' %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg></div>
+              <span class="category-name">Mentale Gesundheit</span>
+              <span class="category-desc">Konzentration, Gedächtnis, Stimmung</span>
+            </div>
+            <span class="checkmark"></span>
+          </label>
+
+          <label class="category-card">
+            <input type="checkbox" name="kategorien" value="fitness">
+            <div class="category-content">
+              <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5l11 11M6.5 17.5l11-11M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></div>
+              <span class="category-name">Fitness</span>
+              <span class="category-desc">Sport, Regeneration, Leistung</span>
+            </div>
+            <span class="checkmark"></span>
+          </label>
+
+          <label class="category-card">
+            <input type="checkbox" name="kategorien" value="stress_schlaf">
+            <div class="category-content">
+              <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
+              <span class="category-name">Stress und Schlaf</span>
+              <span class="category-desc">Entspannung, Schlafqualität</span>
+            </div>
+            <span class="checkmark"></span>
+          </label>
+
+          <label class="category-card">
+            <input type="checkbox" name="kategorien" value="verdauung">
+            <div class="category-content">
+              <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div>
+              <span class="category-name">Verdauung</span>
+              <span class="category-desc">Magen, Darm, Wohlbefinden</span>
+            </div>
+            <span class="checkmark"></span>
+          </label>
+
+          <label class="category-card">
+            <input type="checkbox" name="kategorien" value="immunsystem">
+            <div class="category-content">
+              <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <span class="category-name">Immunsystem</span>
+              <span class="category-desc">Abwehrkräfte, Gesundheit</span>
+            </div>
+            <span class="checkmark"></span>
+          </label>
+
+          <label class="category-card">
+            <input type="checkbox" name="kategorien" value="haut_haare">
+            <div class="category-content">
+              <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg></div>
+              <span class="category-name">Haut, Haare, Nägel</span>
+              <span class="category-desc">Schönheit von innen</span>
+            </div>
+            <span class="checkmark"></span>
+          </label>
+
+          <label class="category-card">
+            <input type="checkbox" name="kategorien" value="knochen_gelenke">
+            <div class="category-content">
+              <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 4a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM6 4a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM18 16a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM6 16a2 2 0 1 1 0 4 2 2 0 1 1 0-4zM6 8v8M18 8v8"/></svg></div>
+              <span class="category-name">Knochen, Gelenke, Muskeln</span>
+              <span class="category-desc">Beweglichkeit, Stabilität</span>
+            </div>
+            <span class="checkmark"></span>
+          </label>
+        </div>
+
+        <p class="selection-counter">
+          <span id="category-count">0</span> von 3-5 Kategorien ausgewählt
+        </p>
+      </div>
+
+      <!-- Step 3: Kategorie-spezifische Fragen -->
+      <div class="form-step" data-step="3">
+        <h2 class="step-title">Detailfragen</h2>
+        <p class="step-description">Beurteile, wie stark die folgenden Aussagen auf dich zutreffen.<br>1 = trifft überhaupt nicht zu, 10 = trifft komplett zu</p>
+
+        <!-- Mentale Gesundheit -->
+        <div class="category-questions hidden" id="questions-mentale_gesundheit">
+          <h3 class="category-title">Mentale Gesundheit</h3>
+          {% render 'essenza-slider-question', name: 'mental_konzentration', label: 'Mir fällt es schwer, mich zu konzentrieren.' %}
+          {% render 'essenza-slider-question', name: 'mental_vergessen', label: 'Ich vergesse manchmal Dinge, die ich erst kurz vorher erledigt habe.' %}
+          {% render 'essenza-slider-question', name: 'mental_muede', label: 'Ich fühle mich häufig bereits nach dem Aufwachen müde.' %}
+          {% render 'essenza-slider-question', name: 'mental_laune', label: 'In letzter Zeit bin ich häufig genervt oder schlecht gelaunt.' %}
+        </div>
+
+        <!-- Fitness -->
+        <div class="category-questions hidden" id="questions-fitness">
+          <h3 class="category-title">Fitness</h3>
+          {% render 'essenza-slider-question', name: 'fitness_sportlicher', label: 'Ich möchte sportlicher werden.' %}
+          {% render 'essenza-slider-question', name: 'fitness_erholung', label: 'Nach dem Sport dauert es oft lange, bis ich mich wieder erholt habe.' %}
+          {% render 'essenza-slider-question', name: 'fitness_kraempfe', label: 'Ich habe häufig Krämpfe oder Kopfschmerzen während oder nach einer sportlichen Aktivität.' %}
+          {% render 'essenza-slider-question', name: 'fitness_fluessigkeit', label: 'Mir fällt es schwer, während des Trainings ausreichend Flüssigkeit zu mir zu nehmen.' %}
+          {% render 'essenza-slider-question', name: 'fitness_haeufigkeit', label: 'Ich treibe mehrfach in der Woche Sport.' %}
+          {% render 'essenza-slider-question', name: 'fitness_wettkampf', label: 'Ich bereite mich aktuell auf einen Wettkampf vor.' %}
+        </div>
+
+        <!-- Stress und Schlaf -->
+        <div class="category-questions hidden" id="questions-stress_schlaf">
+          <h3 class="category-title">Stress und Schlaf</h3>
+          {% render 'essenza-slider-question', name: 'schlaf_probleme', label: 'Ich habe Probleme mit dem Ein- oder Durchschlafen.' %}
+          {% render 'essenza-slider-question', name: 'schlaf_aufstehen', label: 'Ich komme morgens nur schwer aus dem Bett.' %}
+          {% render 'essenza-slider-question', name: 'stress_level', label: 'Ich bin in letzter Zeit vermehrt gestresst.' %}
+          {% render 'essenza-slider-question', name: 'stress_ausgebrannt', label: 'Durch den Stress fühle ich mich häufig müde und ausgebrannt.' %}
+        </div>
+
+        <!-- Immunsystem -->
+        <div class="category-questions hidden" id="questions-immunsystem">
+          <h3 class="category-title">Immunsystem</h3>
+          {% render 'essenza-slider-question', name: 'immun_krank', label: 'Ich werde in letzter Zeit häufig krank.' %}
+          {% render 'essenza-slider-question', name: 'immun_erholung', label: 'Nach einer Erkrankung komme ich nur schwer wieder auf die Beine.' %}
+          {% render 'essenza-slider-question', name: 'immun_ueberfordert', label: 'Ich habe das Gefühl, dass mein Immunsystem häufig überfordert ist.' %}
+        </div>
+
+        <!-- Haut, Haare, Nägel -->
+        <div class="category-questions hidden" id="questions-haut_haare">
+          <h3 class="category-title">Haut, Haare, Nägel und Augen</h3>
+          {% render 'essenza-slider-question', name: 'haut_trocken', label: 'Ich habe eine trockene Haut.' %}
+          {% render 'essenza-slider-question', name: 'haut_falten', label: 'Ich habe stärkere Falten als andere in meinem Alter.' %}
+          {% render 'essenza-slider-question', name: 'haut_unrein', label: 'Ich habe eine unreine Haut.' %}
+          {% render 'essenza-slider-question', name: 'haare_duenn', label: 'Ich habe dünne oder beschädigte Haare.' %}
+          {% render 'essenza-slider-question', name: 'naegel_bruechig', label: 'Ich habe weiche und brüchige Nägel.' %}
+          {% render 'essenza-slider-question', name: 'augen_gereizt', label: 'Meine Augen sind häufig rot und gereizt.' %}
+        </div>
+
+        <!-- Verdauung -->
+        <div class="category-questions hidden" id="questions-verdauung">
+          <h3 class="category-title">Verdauung</h3>
+          {% render 'essenza-slider-question', name: 'verdauung_voll', label: 'Ich fühle mich nach dem Essen häufig sehr voll.' %}
+          {% render 'essenza-slider-question', name: 'verdauung_magen', label: 'Nach dem Essen habe ich häufig Magenprobleme.' %}
+          {% render 'essenza-slider-question', name: 'verdauung_zunehmen', label: 'Ich möchte zunehmen.' %}
+          {% render 'essenza-slider-question', name: 'verdauung_trinken', label: 'Ich trinke nicht ausreichend.' %}
+        </div>
+
+        <!-- Knochen, Gelenke -->
+        <div class="category-questions hidden" id="questions-knochen_gelenke">
+          <h3 class="category-title">Knochen, Gelenke und Muskeln</h3>
+          {% render 'essenza-slider-question', name: 'knochen_gelenk', label: 'Ich habe häufig Gelenkschmerzen.' %}
+          {% render 'essenza-slider-question', name: 'knochen_verspannung', label: 'Ich habe häufig Muskelverspannungen.' %}
+          {% render 'essenza-slider-question', name: 'knochen_sorgen', label: 'Ich mache mir Sorgen um meine Knochengesundheit.' %}
+        </div>
+
+        <p class="no-categories-message hidden" id="no-categories-message">
+          Bitte gehe zurück und wähle mindestens 3 Kategorien aus.
+        </p>
+      </div>
+
+      <!-- Step 4: Lebensstil -->
+      <div class="form-step" data-step="4">
+        <h2 class="step-title">Lebensstil</h2>
+        <p class="step-description">Abschließend einige Fragen zu deinem Lebensstil und deiner Ernährung.</p>
+
+        <div class="lifestyle-section">
+          <h3 class="section-subtitle">Gesundheit in der Familie</h3>
+
+          <div class="form-group">
+            <label for="familie_erkrankungen">In meiner Familie haben (mich eingeschlossen) wie viele Familienmitglieder Erkrankungen wie einen zu hohen Cholesterinspiegel, Bluthochdruck oder Typ-2 Diabetes?</label>
+            <select id="familie_erkrankungen" name="familie_erkrankungen" required>
+              <option value="">Bitte wählen...</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5+">5 oder mehr</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="familie_herzinfarkt">In meiner Familie hatten (mich eingeschlossen) wie viele Familienmitglieder schon einen Herzinfarkt oder Schlaganfall?</label>
+            <select id="familie_herzinfarkt" name="familie_herzinfarkt" required>
+              <option value="">Bitte wählen...</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4+">4 oder mehr</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="lifestyle-section">
+          <h3 class="section-subtitle">Gewohnheiten</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="zigaretten">Ich rauche täglich rund ... Zigaretten</label>
+              <select id="zigaretten" name="zigaretten" required>
+                <option value="">Bitte wählen...</option>
+                <option value="0">0 (Nichtraucher)</option>
+                <option value="1-5">1-5</option>
+                <option value="6-10">6-10</option>
+                <option value="11-20">11-20</option>
+                <option value="20+">Mehr als 20</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="kaffee">Ich trinke täglich ... Tassen Kaffee</label>
+              <select id="kaffee" name="kaffee" required>
+                <option value="">Bitte wählen...</option>
+                <option value="0">0</option>
+                <option value="1-2">1-2</option>
+                <option value="3-4">3-4</option>
+                <option value="5-6">5-6</option>
+                <option value="7+">7 oder mehr</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="freien">Ich halte mich täglich ... Stunden im Freien auf</label>
+              <select id="freien" name="freien" required>
+                <option value="">Bitte wählen...</option>
+                <option value="0-1">Weniger als 1 Stunde</option>
+                <option value="1-2">1-2 Stunden</option>
+                <option value="2-4">2-4 Stunden</option>
+                <option value="4+">Mehr als 4 Stunden</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="alkohol">Ich trinke im Schnitt ... alkoholische Getränke pro Tag</label>
+              <select id="alkohol" name="alkohol" required>
+                <option value="">Bitte wählen...</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3-4">3-4</option>
+                <option value="5+">5 oder mehr</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="lifestyle-section">
+          <h3 class="section-subtitle">Ernährung</h3>
+
+          <div class="form-group">
+            <label for="milch">Rund ... Prozent meiner Mahlzeiten enthalten Milchprodukte</label>
+            <div class="slider-container">
+              <input type="range" id="milch" name="milch" min="0" max="100" value="50" step="10" class="slider">
+              <div class="slider-labels percentage"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+              <div class="slider-value" id="milch-value">50%</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fisch">Ich esse wöchentlich ... Portionen Fisch oder Meeresfrüchte</label>
+            <select id="fisch" name="fisch" required>
+              <option value="">Bitte wählen...</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4+">4 oder mehr</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="obst_gemuese">Rund ... Prozent meiner Mahlzeiten enthalten Obst oder Gemüse</label>
+            <div class="slider-container">
+              <input type="range" id="obst_gemuese" name="obst_gemuese" min="0" max="100" value="50" step="10" class="slider">
+              <div class="slider-labels percentage"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+              <div class="slider-value" id="obst_gemuese-value">50%</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fleisch">Ich esse wöchentlich ... Portionen Fleisch oder Ei</label>
+            <select id="fleisch" name="fleisch" required>
+              <option value="">Bitte wählen...</option>
+              <option value="0">0</option>
+              <option value="1-3">1-3</option>
+              <option value="4-7">4-7</option>
+              <option value="8-14">8-14</option>
+              <option value="14+">Mehr als 14</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="weizen">Rund ... Prozent meiner Mahlzeiten enthalten Weizen</label>
+            <div class="slider-container">
+              <input type="range" id="weizen" name="weizen" min="0" max="100" value="50" step="10" class="slider">
+              <div class="slider-labels percentage"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+              <div class="slider-value" id="weizen-value">50%</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ballaststoffe">Rund ... Prozent meiner Mahlzeiten sind ballaststoffreich</label>
+            <div class="slider-container">
+              <input type="range" id="ballaststoffe" name="ballaststoffe" min="0" max="100" value="50" step="10" class="slider">
+              <div class="slider-labels percentage"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+              <div class="slider-value" id="ballaststoffe-value">50%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="form-navigation">
+        <button type="button" class="btn btn-secondary" id="prev-btn" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          Zurück
+        </button>
+        <button type="button" class="btn btn-primary" id="next-btn">
+          Weiter
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button type="submit" class="btn btn-success hidden" id="submit-btn">
+          Fragebogen absenden
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
+        </button>
+      </div>
+    </form>
+
+    <!-- Success Message -->
+    <div class="success-message hidden" id="success-message">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </div>
+      <h2>Vielen Dank!</h2>
+      <p>Dein Fragebogen wurde erfolgreich übermittelt.</p>
+      <p class="submission-id">Referenznummer: <strong id="submission-id-display"></strong></p>
+
+      {% if section.settings.essenza_product_handle != blank %}
+        <a href="{{ all_products[section.settings.essenza_product_handle].url }}" class="btn btn-primary" style="margin-top: 20px;">
+          Jetzt Essenza bestellen
+        </a>
+      {% endif %}
+
+      <p class="success-note">Die Fragebogen-Daten wurden gespeichert und werden bei deiner nächsten Bestellung berücksichtigt.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="essenza-footer">
+      <p>Bei Fragen kontaktiere uns unter <a href="mailto:{{ section.settings.contact_email | default: 'info@bio-eta.de' }}">{{ section.settings.contact_email | default: 'info@bio-eta.de' }}</a></p>
+      <p class="copyright">Bio-eta GmbH - Essenza</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/**
+ * ESSENZA QUESTIONNAIRE - Shopify Native
+ * Speichert Daten in Cart Attributes und Customer Metafields (ohne externen Server)
+ */
+(function() {
+  const app = document.getElementById('essenza-app');
+  const form = document.getElementById('essenza-form');
+  const formSteps = document.querySelectorAll('.form-step');
+  const progressSteps = document.querySelectorAll('.progress-step');
+  const progressFill = document.getElementById('progress-fill');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const submitBtn = document.getElementById('submit-btn');
+  const successMessage = document.getElementById('success-message');
+  const progressContainer = document.getElementById('progress-container');
+
+  let currentStep = 1;
+  const totalSteps = 4;
+  const isCustomerLoggedIn = app.dataset.customerLoggedIn === 'true';
+  const customerId = app.dataset.customerId;
+
+  const categoryQuestionMap = {
+    'mentale_gesundheit': 'questions-mentale_gesundheit',
+    'fitness': 'questions-fitness',
+    'stress_schlaf': 'questions-stress_schlaf',
+    'verdauung': 'questions-verdauung',
+    'immunsystem': 'questions-immunsystem',
+    'haut_haare': 'questions-haut_haare',
+    'knochen_gelenke': 'questions-knochen_gelenke'
+  };
+
+  // Initialize
+  init();
+
+  function init() {
+    setupEventListeners();
+    updateProgress();
+    initSliders();
+    loadSavedData();
+  }
+
+  function setupEventListeners() {
+    prevBtn.addEventListener('click', goToPrevStep);
+    nextBtn.addEventListener('click', goToNextStep);
+    form.addEventListener('submit', handleSubmit);
+
+    document.querySelectorAll('input[name="geschlecht"]').forEach(radio => {
+      radio.addEventListener('change', handleGenderChange);
+    });
+
+    document.querySelectorAll('input[name="kategorien"]').forEach(cb => {
+      cb.addEventListener('change', handleCategoryChange);
+    });
+
+    setupSliderListeners();
+  }
+
+  function setupSliderListeners() {
+    const aktivitaetSlider = document.getElementById('aktivitaet');
+    if (aktivitaetSlider) {
+      aktivitaetSlider.addEventListener('input', function() {
+        document.getElementById('aktivitaet-value').textContent = this.value;
+        updateSliderTrack(this);
+      });
+    }
+
+    ['milch', 'obst_gemuese', 'weizen', 'ballaststoffe'].forEach(id => {
+      const slider = document.getElementById(id);
+      if (slider) {
+        slider.addEventListener('input', function() {
+          document.getElementById(id + '-value').textContent = this.value + '%';
+          updateSliderTrack(this);
+        });
+      }
+    });
+
+    document.querySelectorAll('.slider').forEach(slider => {
+      slider.addEventListener('input', function() { updateSliderTrack(this); });
+      updateSliderTrack(slider);
+    });
+  }
+
+  function updateSliderTrack(slider) {
+    const min = slider.min || 0;
+    const max = slider.max || 100;
+    const percentage = ((slider.value - min) / (max - min)) * 100;
+    slider.style.background = `linear-gradient(to right, #2D5A27 0%, #4A7C43 ${percentage}%, #D4E0D4 ${percentage}%, #D4E0D4 100%)`;
+  }
+
+  function initSliders() {
+    document.querySelectorAll('.slider').forEach(slider => updateSliderTrack(slider));
+  }
+
+  function handleGenderChange(e) {
+    const pregnancyGroup = document.getElementById('pregnancy-group');
+    const pregnancyRadios = document.querySelectorAll('input[name="schwangerschaft"]');
+
+    if (e.target.value === 'weiblich') {
+      pregnancyGroup.classList.remove('hidden');
+      pregnancyRadios.forEach(r => r.required = true);
+    } else {
+      pregnancyGroup.classList.add('hidden');
+      pregnancyRadios.forEach(r => { r.required = false; r.checked = false; });
+    }
+  }
+
+  function handleCategoryChange() {
+    const count = document.querySelectorAll('input[name="kategorien"]:checked').length;
+    document.getElementById('category-count').textContent = count;
+    if (currentStep === 2) nextBtn.disabled = count < 3 || count > 5;
+  }
+
+  function updateCategoryQuestions() {
+    const selected = Array.from(document.querySelectorAll('input[name="kategorien"]:checked')).map(cb => cb.value);
+
+    Object.values(categoryQuestionMap).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    });
+
+    selected.forEach(cat => {
+      const el = document.getElementById(categoryQuestionMap[cat]);
+      if (el) el.classList.remove('hidden');
+    });
+
+    const noMsg = document.getElementById('no-categories-message');
+    if (noMsg) noMsg.classList.toggle('hidden', selected.length > 0);
+  }
+
+  function goToNextStep() {
+    if (!validateCurrentStep()) return;
+    if (currentStep === 2) updateCategoryQuestions();
+    if (currentStep < totalSteps) {
+      currentStep++;
+      updateFormStep();
+      updateProgress();
+      saveProgress();
+      scrollToTop();
+    }
+  }
+
+  function goToPrevStep() {
+    if (currentStep > 1) {
+      currentStep--;
+      updateFormStep();
+      updateProgress();
+      scrollToTop();
+    }
+  }
+
+  function updateFormStep() {
+    formSteps.forEach(step => {
+      step.classList.toggle('active', parseInt(step.dataset.step) === currentStep);
+    });
+    prevBtn.disabled = currentStep === 1;
+    nextBtn.classList.toggle('hidden', currentStep === totalSteps);
+    submitBtn.classList.toggle('hidden', currentStep !== totalSteps);
+    if (currentStep === 2) handleCategoryChange();
+  }
+
+  function updateProgress() {
+    progressFill.style.width = (currentStep / totalSteps * 100) + '%';
+    progressSteps.forEach((step, i) => {
+      step.classList.remove('active', 'completed');
+      if (i + 1 === currentStep) step.classList.add('active');
+      else if (i + 1 < currentStep) step.classList.add('completed');
+    });
+  }
+
+  function validateCurrentStep() {
+    const step = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+
+    if (currentStep === 1) {
+      let valid = true;
+      step.querySelectorAll('input[required], select[required]').forEach(field => {
+        if (field.name === 'schwangerschaft' && document.getElementById('pregnancy-group').classList.contains('hidden')) return;
+
+        if (field.type === 'radio') {
+          if (!document.querySelector(`input[name="${field.name}"]:checked`)) valid = false;
+        } else if (!field.value.trim()) {
+          valid = false;
+          field.style.borderColor = '#C0392B';
+        } else {
+          field.style.borderColor = '';
+        }
+      });
+
+      const email = document.getElementById('email');
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        valid = false;
+        email.style.borderColor = '#C0392B';
+      }
+
+      if (!valid) showNotification('Bitte fülle alle Pflichtfelder aus.', 'error');
+      return valid;
+    }
+
+    if (currentStep === 2) {
+      const count = document.querySelectorAll('input[name="kategorien"]:checked').length;
+      if (count < 3 || count > 5) {
+        showNotification('Bitte wähle 3 bis 5 Kategorien aus.', 'error');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function scrollToTop() {
+    app.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showNotification(message, type) {
+    const existing = document.querySelector('.essenza-notification');
+    if (existing) existing.remove();
+
+    const notif = document.createElement('div');
+    notif.className = 'essenza-notification essenza-notification-' + type;
+    notif.innerHTML = `<span>${message}</span><button onclick="this.parentElement.remove()">&times;</button>`;
+    document.body.appendChild(notif);
+
+    setTimeout(() => notif.remove(), 5000);
+  }
+
+  function generateSubmissionId() {
+    return 'ESS-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+  }
+
+  function collectFormData() {
+    const fd = new FormData(form);
+    return {
+      submissionId: generateSubmissionId(),
+      timestamp: new Date().toISOString(),
+      personal: {
+        vorname: fd.get('vorname'),
+        nachname: fd.get('nachname'),
+        email: fd.get('email'),
+        geschlecht: fd.get('geschlecht'),
+        schwangerschaft: fd.get('schwangerschaft') || 'nicht_zutreffend',
+        adresse: { strasse: fd.get('strasse'), plz: fd.get('plz'), ort: fd.get('ort') },
+        groesse: fd.get('groesse'),
+        gewicht: fd.get('gewicht'),
+        aktivitaet: fd.get('aktivitaet')
+      },
+      kategorien: fd.getAll('kategorien'),
+      kategorie_antworten: collectCategoryAnswers(fd),
+      lebensstil: {
+        familie_erkrankungen: fd.get('familie_erkrankungen'),
+        familie_herzinfarkt: fd.get('familie_herzinfarkt'),
+        zigaretten: fd.get('zigaretten'),
+        kaffee: fd.get('kaffee'),
+        freien: fd.get('freien'),
+        alkohol: fd.get('alkohol'),
+        ernaehrung: {
+          milch: fd.get('milch'),
+          fisch: fd.get('fisch'),
+          obst_gemuese: fd.get('obst_gemuese'),
+          fleisch: fd.get('fleisch'),
+          weizen: fd.get('weizen'),
+          ballaststoffe: fd.get('ballaststoffe')
+        }
+      }
+    };
+  }
+
+  function collectCategoryAnswers(fd) {
+    const answers = {};
+    const kategorien = fd.getAll('kategorien');
+
+    if (kategorien.includes('mentale_gesundheit')) {
+      answers.mentale_gesundheit = {
+        konzentration: fd.get('mental_konzentration'),
+        vergessen: fd.get('mental_vergessen'),
+        muede: fd.get('mental_muede'),
+        laune: fd.get('mental_laune')
+      };
+    }
+    if (kategorien.includes('fitness')) {
+      answers.fitness = {
+        sportlicher: fd.get('fitness_sportlicher'),
+        erholung: fd.get('fitness_erholung'),
+        kraempfe: fd.get('fitness_kraempfe'),
+        fluessigkeit: fd.get('fitness_fluessigkeit'),
+        haeufigkeit: fd.get('fitness_haeufigkeit'),
+        wettkampf: fd.get('fitness_wettkampf')
+      };
+    }
+    if (kategorien.includes('stress_schlaf')) {
+      answers.stress_schlaf = {
+        schlaf_probleme: fd.get('schlaf_probleme'),
+        aufstehen: fd.get('schlaf_aufstehen'),
+        stress_level: fd.get('stress_level'),
+        ausgebrannt: fd.get('stress_ausgebrannt')
+      };
+    }
+    if (kategorien.includes('immunsystem')) {
+      answers.immunsystem = {
+        krank: fd.get('immun_krank'),
+        erholung: fd.get('immun_erholung'),
+        ueberfordert: fd.get('immun_ueberfordert')
+      };
+    }
+    if (kategorien.includes('haut_haare')) {
+      answers.haut_haare = {
+        trocken: fd.get('haut_trocken'),
+        falten: fd.get('haut_falten'),
+        unrein: fd.get('haut_unrein'),
+        haare_duenn: fd.get('haare_duenn'),
+        naegel_bruechig: fd.get('naegel_bruechig'),
+        augen_gereizt: fd.get('augen_gereizt')
+      };
+    }
+    if (kategorien.includes('verdauung')) {
+      answers.verdauung = {
+        voll: fd.get('verdauung_voll'),
+        magen: fd.get('verdauung_magen'),
+        zunehmen: fd.get('verdauung_zunehmen'),
+        trinken: fd.get('verdauung_trinken')
+      };
+    }
+    if (kategorien.includes('knochen_gelenke')) {
+      answers.knochen_gelenke = {
+        gelenk: fd.get('knochen_gelenk'),
+        verspannung: fd.get('knochen_verspannung'),
+        sorgen: fd.get('knochen_sorgen')
+      };
+    }
+
+    return answers;
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!validateCurrentStep()) return;
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span> Wird gespeichert...';
+
+    try {
+      const data = collectFormData();
+
+      // 1. Speichere in localStorage
+      localStorage.setItem('essenza_questionnaire', JSON.stringify(data));
+      localStorage.setItem('essenza_submission_id', data.submissionId);
+
+      // 2. Speichere als Cart Attribute (wird bei Checkout zur Bestellung hinzugefügt)
+      await saveToCartAttributes(data);
+
+      // 3. Trigger Custom Event
+      window.dispatchEvent(new CustomEvent('essenza:submitted', { detail: data }));
+
+      // Erfolg anzeigen
+      document.getElementById('submission-id-display').textContent = data.submissionId;
+      form.classList.add('hidden');
+      progressContainer.classList.add('hidden');
+      successMessage.classList.remove('hidden');
+      scrollToTop();
+
+      showNotification('Fragebogen erfolgreich gespeichert!', 'success');
+
+    } catch (error) {
+      console.error('Fehler:', error);
+      showNotification('Fehler beim Speichern. Bitte versuche es erneut.', 'error');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Fragebogen absenden <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>';
+    }
+  }
+
+  /**
+   * Speichert Fragebogen-Daten als Cart Attributes
+   * Diese werden automatisch zur Bestellung hinzugefügt
+   */
+  async function saveToCartAttributes(data) {
+    // Komprimiere Daten für Cart Attributes (max 5 Attribute mit je 255 Zeichen)
+    const essenzaData = {
+      'attributes[essenza_submission_id]': data.submissionId,
+      'attributes[essenza_kategorien]': data.kategorien.join(','),
+      'attributes[essenza_name]': data.personal.vorname + ' ' + data.personal.nachname,
+      'attributes[essenza_email]': data.personal.email,
+      'attributes[essenza_data]': btoa(encodeURIComponent(JSON.stringify({
+        personal: {
+          geschlecht: data.personal.geschlecht,
+          schwangerschaft: data.personal.schwangerschaft,
+          groesse: data.personal.groesse,
+          gewicht: data.personal.gewicht,
+          aktivitaet: data.personal.aktivitaet
+        },
+        kategorien: data.kategorien,
+        timestamp: data.timestamp
+      })))
+    };
+
+    const response = await fetch('/cart/update.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(essenzaData)
+    });
+
+    if (!response.ok) throw new Error('Cart update failed');
+
+    // Speichere vollständige Daten als Note (für Admin sichtbar)
+    await fetch('/cart/update.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        note: `ESSENZA FRAGEBOGEN [${data.submissionId}]\n` +
+              `Name: ${data.personal.vorname} ${data.personal.nachname}\n` +
+              `E-Mail: ${data.personal.email}\n` +
+              `Kategorien: ${data.kategorien.join(', ')}\n` +
+              `Aktivität: ${data.personal.aktivitaet}/10\n` +
+              `Erfasst: ${new Date(data.timestamp).toLocaleString('de-DE')}`
+      })
+    });
+
+    return true;
+  }
+
+  /**
+   * Speichere Fortschritt in localStorage
+   */
+  function saveProgress() {
+    const fd = new FormData(form);
+    const progress = { step: currentStep };
+    for (const [key, value] of fd.entries()) {
+      if (key === 'kategorien') {
+        progress[key] = progress[key] || [];
+        progress[key].push(value);
+      } else {
+        progress[key] = value;
+      }
+    }
+    localStorage.setItem('essenza_progress', JSON.stringify(progress));
+  }
+
+  /**
+   * Lade gespeicherten Fortschritt
+   */
+  function loadSavedData() {
+    try {
+      const saved = localStorage.getItem('essenza_progress');
+      if (!saved) return;
+
+      const data = JSON.parse(saved);
+
+      // Fülle Formularfelder
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === 'step') return;
+
+        if (key === 'kategorien' && Array.isArray(value)) {
+          value.forEach(v => {
+            const cb = document.querySelector(`input[name="kategorien"][value="${v}"]`);
+            if (cb) cb.checked = true;
+          });
+        } else if (key === 'geschlecht' || key === 'schwangerschaft') {
+          const radio = document.querySelector(`input[name="${key}"][value="${value}"]`);
+          if (radio) {
+            radio.checked = true;
+            if (key === 'geschlecht') handleGenderChange({ target: radio });
+          }
+        } else {
+          const field = document.querySelector(`[name="${key}"]`);
+          if (field) {
+            field.value = value;
+            if (field.type === 'range') {
+              updateSliderTrack(field);
+              const display = document.getElementById(key + '-value');
+              if (display) display.textContent = value + (key === 'aktivitaet' ? '' : '%');
+            }
+          }
+        }
+      });
+
+      handleCategoryChange();
+    } catch (e) {
+      console.warn('Fortschritt konnte nicht geladen werden:', e);
+    }
+  }
+
+  // Global API
+  window.EssenzaQuestionnaire = {
+    getData: () => JSON.parse(localStorage.getItem('essenza_questionnaire') || '{}'),
+    getSubmissionId: () => localStorage.getItem('essenza_submission_id'),
+    reset: () => {
+      localStorage.removeItem('essenza_progress');
+      localStorage.removeItem('essenza_questionnaire');
+      localStorage.removeItem('essenza_submission_id');
+      location.reload();
+    }
+  };
+})();
+</script>
+
+<style>
+/* Inline Critical CSS - vollständiges Styling in essenza-native.css */
+.essenza-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: white;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.essenza-notification-success { background: #2D5A27; }
+.essenza-notification-error { background: #C0392B; }
+.essenza-notification button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.customer-info-box {
+  background: #F7FAF7;
+  border: 1px solid #8FB573;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  color: #2D5A27;
+}
+.submission-id {
+  background: #F7FAF7;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-top: 15px;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Essenza Fragebogen",
+  "tag": "section",
+  "class": "essenza-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Kontakt E-Mail",
+      "default": "info@bio-eta.de"
+    },
+    {
+      "type": "product",
+      "id": "essenza_product_handle",
+      "label": "Essenza Produkt",
+      "info": "Wird nach Fragebogen-Abschluss verlinkt"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Essenza Fragebogen",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

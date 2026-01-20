@@ -1,0 +1,14 @@
+{% comment %}
+  Essenza Slider Question Snippet
+  Usage: {% render 'essenza-slider-question', name: 'field_name', label: 'Question text' %}
+{% endcomment %}
+
+<div class="question-item">
+  <label>{{ label }}</label>
+  <div class="slider-container">
+    <input type="range" name="{{ name }}" min="1" max="10" value="5" class="slider">
+    <div class="slider-labels compact">
+      <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+    </div>
+  </div>
+</div>
