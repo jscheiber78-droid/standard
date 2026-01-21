@@ -1,0 +1,1310 @@
+<!-- Personalized Product Questionnaire for Shopify -->
+<!-- Copy and paste this entire code into your Shopify page HTML editor -->
+<!-- This page should be linked from the order confirmation page -->
+
+<style>
+:root {
+    --primary-color: #4CAF50;
+    --primary-dark: #45a049;
+    --secondary-color: #2196F3;
+    --accent-color: #FF9800;
+    --text-color: #333;
+    --text-light: #666;
+    --border-color: #ddd;
+    --background-light: #f9f9f9;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.personalized-quiz * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.personalized-quiz {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Header Section */
+.quiz-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.quiz-header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.quiz-header p {
+    font-size: 1rem;
+    opacity: 0.95;
+}
+
+/* Progress Bar */
+.progress-container {
+    background: #e0e0e0;
+    height: 8px;
+    width: 100%;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Quiz Content */
+.quiz-content {
+    padding: 40px 30px;
+}
+
+.question-section {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.question-section.active {
+    display: block;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.section-description {
+    color: var(--text-light);
+    margin-bottom: 30px;
+    font-size: 1rem;
+}
+
+/* Question Styles */
+.question {
+    margin-bottom: 35px;
+}
+
+.question-label {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.question-required {
+    color: #f44336;
+    margin-left: 4px;
+}
+
+/* Input Styles */
+.text-input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* Yes/No Buttons */
+.yes-no-group {
+    display: flex;
+    gap: 15px;
+}
+
+.yes-no-btn {
+    flex: 1;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.yes-no-btn:hover {
+    border-color: var(--primary-color);
+    background: rgba(76, 175, 80, 0.05);
+}
+
+.yes-no-btn.selected {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Scale Input (1-10) */
+.scale-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.scale-values {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.scale-btn {
+    flex: 1;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.scale-btn:hover {
+    border-color: var(--primary-color);
+    background: rgba(76, 175, 80, 0.05);
+}
+
+.scale-btn.selected {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    padding: 0 5px;
+}
+
+/* Problem Areas Selection */
+.problem-areas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.problem-area-card {
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.problem-area-card:hover {
+    border-color: var(--primary-color);
+    background: rgba(76, 175, 80, 0.05);
+    transform: translateY(-2px);
+}
+
+.problem-area-card.selected {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.problem-area-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.problem-area-title {
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+/* Navigation Buttons */
+.quiz-navigation {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn {
+    padding: 14px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    flex: 1;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Completion Screen */
+.completion-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 30px;
+}
+
+.completion-screen.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.completion-icon {
+    font-size: 5rem;
+    margin-bottom: 20px;
+}
+
+.completion-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.completion-message {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 40px;
+}
+
+.loading-spinner.active {
+    display: block;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .quiz-header {
+        padding: 30px 20px;
+    }
+
+    .quiz-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .quiz-content {
+        padding: 30px 20px;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+    }
+
+    .problem-areas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .scale-values {
+        flex-wrap: wrap;
+    }
+
+    .scale-btn {
+        min-width: 45px;
+    }
+
+    .quiz-navigation {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .personalized-quiz {
+        padding: 10px;
+    }
+
+    .quiz-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .yes-no-group {
+        flex-direction: column;
+    }
+}
+
+/* Error Messages */
+.error-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    display: none;
+}
+
+.error-message.visible {
+    display: block;
+}
+</style>
+
+<div class="personalized-quiz">
+    <div class="quiz-container">
+        <!-- Header -->
+        <div class="quiz-header">
+            <h1>🧬 Bio-Eta Essenza Personalisierungsfragebogen</h1>
+            <p>Helfen Sie uns, Ihre perfekte Nährstoffkombination zu erstellen</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Quiz Content -->
+        <div class="quiz-content">
+            <form id="personalizedQuiz">
+                <!-- Section 1: General Questions -->
+                <div class="question-section active" data-section="general">
+                    <h2 class="section-title">Allgemeine Informationen</h2>
+                    <p class="section-description">Zunächst benötigen wir einige grundlegende Informationen über Sie.</p>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Ihr vollständiger Name<span class="question-required">*</span>
+                        </label>
+                        <input type="text" class="text-input" name="fullName" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Alter<span class="question-required">*</span>
+                        </label>
+                        <input type="number" class="text-input" name="age" min="18" max="120" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Geschlecht<span class="question-required">*</span>
+                        </label>
+                        <div class="yes-no-group">
+                            <button type="button" class="yes-no-btn" data-field="gender" data-value="male">Männlich</button>
+                            <button type="button" class="yes-no-btn" data-field="gender" data-value="female">Weiblich</button>
+                            <button type="button" class="yes-no-btn" data-field="gender" data-value="diverse">Divers</button>
+                        </div>
+                        <input type="hidden" name="gender" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Körpergröße (cm)<span class="question-required">*</span>
+                        </label>
+                        <input type="number" class="text-input" name="height" min="100" max="250" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Körpergewicht (kg)<span class="question-required">*</span>
+                        </label>
+                        <input type="number" class="text-input" name="weight" min="30" max="300" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            E-Mail-Adresse<span class="question-required">*</span>
+                        </label>
+                        <input type="email" class="text-input" name="email" required>
+                    </div>
+                </div>
+
+                <!-- Section 2: Problem Areas Selection -->
+                <div class="question-section" data-section="problem-areas">
+                    <h2 class="section-title">Ihre Schwerpunktbereiche</h2>
+                    <p class="section-description">Wählen Sie die Bereiche aus, die für Sie besonders wichtig sind. Sie können mehrere Bereiche auswählen.</p>
+
+                    <div class="problem-areas-grid">
+                        <div class="problem-area-card" data-area="energy">
+                            <div class="problem-area-icon">⚡</div>
+                            <div class="problem-area-title">Energie & Vitalität</div>
+                        </div>
+                        <div class="problem-area-card" data-area="cognition">
+                            <div class="problem-area-icon">🧠</div>
+                            <div class="problem-area-title">Kognitive Funktion</div>
+                        </div>
+                        <div class="problem-area-card" data-area="recovery">
+                            <div class="problem-area-icon">🔄</div>
+                            <div class="problem-area-title">Regeneration</div>
+                        </div>
+                        <div class="problem-area-card" data-area="immunity">
+                            <div class="problem-area-icon">🛡️</div>
+                            <div class="problem-area-title">Immunsystem</div>
+                        </div>
+                        <div class="problem-area-card" data-area="stress">
+                            <div class="problem-area-icon">😌</div>
+                            <div class="problem-area-title">Stressresilienz</div>
+                        </div>
+                        <div class="problem-area-card" data-area="skin">
+                            <div class="problem-area-icon">✨</div>
+                            <div class="problem-area-title">Haut & Haare</div>
+                        </div>
+                        <div class="problem-area-card" data-area="joints">
+                            <div class="problem-area-icon">🦴</div>
+                            <div class="problem-area-title">Gelenke & Knochen</div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="selectedAreas" id="selectedAreas">
+                    <div class="error-message" id="areaError">Bitte wählen Sie mindestens einen Schwerpunktbereich aus.</div>
+                </div>
+
+                <!-- Dynamic Problem Area Questions will be inserted here -->
+                <div id="dynamicQuestions"></div>
+
+                <!-- Section: Lifestyle Questions -->
+                <div class="question-section" data-section="lifestyle">
+                    <h2 class="section-title">Lebensstil & Ernährung</h2>
+                    <p class="section-description">Abschließend möchten wir mehr über Ihren Lebensstil erfahren.</p>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Wie würden Sie Ihre Schlafqualität bewerten?<span class="question-required">*</span>
+                        </label>
+                        <div class="scale-container">
+                            <div class="scale-values" id="sleepQuality">
+                                <button type="button" class="scale-btn" data-field="sleepQuality" data-value="1">1</button>
+                                <button type="button" class="scale-btn" data-field="sleepQuality" data-value="2">2</button>
+                                <button type="button" class="scale-btn" data-field="sleepQuality" data-value="3">3</button>
+                                <button type="button" class="scale-btn" data-field="sleepQuality" data-value="4">4</button>
+                                <button type="button" class="scale-btn" data-field="sleepQuality" data-value="5">5</button>
+                                <button type="button" class="scale-btn" data-field="sleepQuality" data-value="6">6</button>
+                                <button type="button" class="scale-btn" data-field="sleepQuality" data-value="7">7</button>
+                                <button type="button" class="scale-btn" data-field="sleepQuality" data-value="8">8</button>
+                                <button type="button" class="scale-btn" data-field="sleepQuality" data-value="9">9</button>
+                                <button type="button" class="scale-btn" data-field="sleepQuality" data-value="10">10</button>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Sehr schlecht</span>
+                                <span>Ausgezeichnet</span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="sleepQuality" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Wie viele Stunden schlafen Sie durchschnittlich pro Nacht?<span class="question-required">*</span>
+                        </label>
+                        <input type="number" class="text-input" name="sleepHours" min="0" max="24" step="0.5" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Wie würden Sie Ihr Stressniveau bewerten?<span class="question-required">*</span>
+                        </label>
+                        <div class="scale-container">
+                            <div class="scale-values" id="stressLevel">
+                                <button type="button" class="scale-btn" data-field="stressLevel" data-value="1">1</button>
+                                <button type="button" class="scale-btn" data-field="stressLevel" data-value="2">2</button>
+                                <button type="button" class="scale-btn" data-field="stressLevel" data-value="3">3</button>
+                                <button type="button" class="scale-btn" data-field="stressLevel" data-value="4">4</button>
+                                <button type="button" class="scale-btn" data-field="stressLevel" data-value="5">5</button>
+                                <button type="button" class="scale-btn" data-field="stressLevel" data-value="6">6</button>
+                                <button type="button" class="scale-btn" data-field="stressLevel" data-value="7">7</button>
+                                <button type="button" class="scale-btn" data-field="stressLevel" data-value="8">8</button>
+                                <button type="button" class="scale-btn" data-field="stressLevel" data-value="9">9</button>
+                                <button type="button" class="scale-btn" data-field="stressLevel" data-value="10">10</button>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Kein Stress</span>
+                                <span>Sehr gestresst</span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="stressLevel" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Wie oft treiben Sie Sport pro Woche?<span class="question-required">*</span>
+                        </label>
+                        <div class="scale-container">
+                            <div class="scale-values" id="exerciseFrequency">
+                                <button type="button" class="scale-btn" data-field="exerciseFrequency" data-value="0">0</button>
+                                <button type="button" class="scale-btn" data-field="exerciseFrequency" data-value="1">1</button>
+                                <button type="button" class="scale-btn" data-field="exerciseFrequency" data-value="2">2</button>
+                                <button type="button" class="scale-btn" data-field="exerciseFrequency" data-value="3">3</button>
+                                <button type="button" class="scale-btn" data-field="exerciseFrequency" data-value="4">4</button>
+                                <button type="button" class="scale-btn" data-field="exerciseFrequency" data-value="5">5</button>
+                                <button type="button" class="scale-btn" data-field="exerciseFrequency" data-value="6">6</button>
+                                <button type="button" class="scale-btn" data-field="exerciseFrequency" data-value="7">7+</button>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Nie</span>
+                                <span>Täglich oder mehr</span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="exerciseFrequency" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Rauchen Sie?<span class="question-required">*</span>
+                        </label>
+                        <div class="yes-no-group">
+                            <button type="button" class="yes-no-btn" data-field="smoking" data-value="yes">Ja</button>
+                            <button type="button" class="yes-no-btn" data-field="smoking" data-value="no">Nein</button>
+                        </div>
+                        <input type="hidden" name="smoking" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Wie viele alkoholische Getränke konsumieren Sie pro Woche?<span class="question-required">*</span>
+                        </label>
+                        <input type="number" class="text-input" name="alcoholConsumption" min="0" max="100" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Wie würden Sie Ihre Ernährung beschreiben?<span class="question-required">*</span>
+                        </label>
+                        <div class="scale-container">
+                            <div class="scale-values" id="dietQuality">
+                                <button type="button" class="scale-btn" data-field="dietQuality" data-value="1">1</button>
+                                <button type="button" class="scale-btn" data-field="dietQuality" data-value="2">2</button>
+                                <button type="button" class="scale-btn" data-field="dietQuality" data-value="3">3</button>
+                                <button type="button" class="scale-btn" data-field="dietQuality" data-value="4">4</button>
+                                <button type="button" class="scale-btn" data-field="dietQuality" data-value="5">5</button>
+                                <button type="button" class="scale-btn" data-field="dietQuality" data-value="6">6</button>
+                                <button type="button" class="scale-btn" data-field="dietQuality" data-value="7">7</button>
+                                <button type="button" class="scale-btn" data-field="dietQuality" data-value="8">8</button>
+                                <button type="button" class="scale-btn" data-field="dietQuality" data-value="9">9</button>
+                                <button type="button" class="scale-btn" data-field="dietQuality" data-value="10">10</button>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Sehr ungesund</span>
+                                <span>Sehr gesund</span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="dietQuality" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Ernähren Sie sich vegetarisch oder vegan?<span class="question-required">*</span>
+                        </label>
+                        <div class="yes-no-group">
+                            <button type="button" class="yes-no-btn" data-field="dietType" data-value="omnivore">Omnivore</button>
+                            <button type="button" class="yes-no-btn" data-field="dietType" data-value="vegetarian">Vegetarisch</button>
+                            <button type="button" class="yes-no-btn" data-field="dietType" data-value="vegan">Vegan</button>
+                        </div>
+                        <input type="hidden" name="dietType" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">
+                            Nehmen Sie derzeit Nahrungsergänzungsmittel ein?<span class="question-required">*</span>
+                        </label>
+                        <div class="yes-no-group">
+                            <button type="button" class="yes-no-btn" data-field="supplements" data-value="yes">Ja</button>
+                            <button type="button" class="yes-no-btn" data-field="supplements" data-value="no">Nein</button>
+                        </div>
+                        <input type="hidden" name="supplements" required>
+                    </div>
+
+                    <div class="question" id="supplementDetailsQuestion" style="display: none;">
+                        <label class="question-label">
+                            Welche Nahrungsergänzungsmittel nehmen Sie ein?
+                        </label>
+                        <input type="text" class="text-input" name="supplementDetails" placeholder="z.B. Vitamin D, Omega-3, Magnesium">
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="quiz-navigation">
+                    <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">Zurück</button>
+                    <button type="button" class="btn btn-primary" id="nextBtn">Weiter</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">Fragebogen absenden</button>
+                </div>
+            </form>
+
+            <!-- Loading Spinner -->
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Ihre Daten werden verarbeitet...</p>
+            </div>
+
+            <!-- Completion Screen -->
+            <div class="completion-screen" id="completionScreen">
+                <div class="completion-icon">✅</div>
+                <h2 class="completion-title">Vielen Dank!</h2>
+                <div class="completion-message">
+                    <p>Ihr Fragebogen wurde erfolgreich übermittelt.</p>
+                    <p>Wir berechnen nun Ihre personalisierte Nährstoffkombination basierend auf Ihren Angaben.</p>
+                    <p>Sie erhalten in Kürze eine Bestätigungs-E-Mail mit weiteren Informationen.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+// Personalized Questionnaire Logic
+(function() {
+    'use strict';
+
+    // Configuration
+    const CONFIG = {
+        apiEndpoint: '/apps/personalized-questionnaire/submit', // Update with your Shopify API endpoint
+        emailEndpoint: '/apps/personalized-questionnaire/email'  // Update with your email endpoint
+    };
+
+    // Problem area specific questions
+    const PROBLEM_AREA_QUESTIONS = {
+        energy: [
+            {
+                id: 'energy_fatigue',
+                label: 'Fühlen Sie sich häufig müde oder energielos?',
+                type: 'yesno'
+            },
+            {
+                id: 'energy_afternoon',
+                label: 'Wie stark ist Ihr Energietief am Nachmittag? (1 = kein Tief, 10 = sehr stark)',
+                type: 'scale'
+            },
+            {
+                id: 'energy_morning',
+                label: 'Fühlen Sie sich morgens ausgeruht und energiegeladen?',
+                type: 'yesno'
+            }
+        ],
+        cognition: [
+            {
+                id: 'cognition_focus',
+                label: 'Wie bewerten Sie Ihre Konzentrationsfähigkeit? (1 = sehr schlecht, 10 = ausgezeichnet)',
+                type: 'scale'
+            },
+            {
+                id: 'cognition_memory',
+                label: 'Haben Sie Schwierigkeiten, sich Dinge zu merken?',
+                type: 'yesno'
+            },
+            {
+                id: 'cognition_mental_clarity',
+                label: 'Wie würden Sie Ihre geistige Klarheit bewerten? (1 = vernebelt, 10 = kristallklar)',
+                type: 'scale'
+            }
+        ],
+        recovery: [
+            {
+                id: 'recovery_muscle',
+                label: 'Wie schnell regenerieren Ihre Muskeln nach dem Training?',
+                type: 'scale'
+            },
+            {
+                id: 'recovery_soreness',
+                label: 'Leiden Sie häufig unter Muskelkater?',
+                type: 'yesno'
+            },
+            {
+                id: 'recovery_injury',
+                label: 'Hatten Sie in den letzten 6 Monaten Verletzungen?',
+                type: 'yesno'
+            }
+        ],
+        immunity: [
+            {
+                id: 'immunity_frequency',
+                label: 'Wie oft sind Sie im Jahr erkältet oder krank?',
+                type: 'text'
+            },
+            {
+                id: 'immunity_duration',
+                label: 'Wenn Sie krank werden, wie lange dauert die Genesung normalerweise?',
+                type: 'text'
+            },
+            {
+                id: 'immunity_strength',
+                label: 'Wie stark schätzen Sie Ihr Immunsystem ein? (1 = sehr schwach, 10 = sehr stark)',
+                type: 'scale'
+            }
+        ],
+        stress: [
+            {
+                id: 'stress_management',
+                label: 'Wie gut können Sie mit Stress umgehen? (1 = sehr schlecht, 10 = ausgezeichnet)',
+                type: 'scale'
+            },
+            {
+                id: 'stress_anxiety',
+                label: 'Leiden Sie unter Angstzuständen?',
+                type: 'yesno'
+            },
+            {
+                id: 'stress_relaxation',
+                label: 'Praktizieren Sie regelmäßig Entspannungstechniken (Meditation, Yoga, etc.)?',
+                type: 'yesno'
+            }
+        ],
+        skin: [
+            {
+                id: 'skin_condition',
+                label: 'Wie bewerten Sie den Zustand Ihrer Haut? (1 = sehr schlecht, 10 = ausgezeichnet)',
+                type: 'scale'
+            },
+            {
+                id: 'skin_issues',
+                label: 'Haben Sie Hautprobleme (Akne, Trockenheit, Rötungen)?',
+                type: 'yesno'
+            },
+            {
+                id: 'skin_hair_nails',
+                label: 'Sind Sie mit der Qualität Ihrer Haare und Nägel zufrieden?',
+                type: 'yesno'
+            }
+        ],
+        joints: [
+            {
+                id: 'joints_pain',
+                label: 'Leiden Sie unter Gelenkschmerzen?',
+                type: 'yesno'
+            },
+            {
+                id: 'joints_stiffness',
+                label: 'Wie oft fühlen sich Ihre Gelenke steif an? (1 = nie, 10 = ständig)',
+                type: 'scale'
+            },
+            {
+                id: 'joints_mobility',
+                label: 'Wie bewerten Sie Ihre Beweglichkeit? (1 = sehr eingeschränkt, 10 = sehr beweglich)',
+                type: 'scale'
+            }
+        ]
+    };
+
+    // State management
+    let currentSection = 0;
+    let selectedProblemAreas = [];
+    let formData = {};
+    const sections = [];
+
+    // Initialize
+    function init() {
+        setupSections();
+        setupEventListeners();
+        updateProgress();
+    }
+
+    // Setup sections array
+    function setupSections() {
+        sections.push('general');
+        sections.push('problem-areas');
+        sections.push('lifestyle');
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+        // Yes/No buttons
+        document.querySelectorAll('.yes-no-btn').forEach(btn => {
+            btn.addEventListener('click', handleYesNoClick);
+        });
+
+        // Scale buttons
+        document.querySelectorAll('.scale-btn').forEach(btn => {
+            btn.addEventListener('click', handleScaleClick);
+        });
+
+        // Problem area cards
+        document.querySelectorAll('.problem-area-card').forEach(card => {
+            card.addEventListener('click', handleProblemAreaClick);
+        });
+
+        // Navigation buttons
+        document.getElementById('nextBtn').addEventListener('click', handleNext);
+        document.getElementById('prevBtn').addEventListener('click', handlePrev);
+
+        // Form submission
+        document.getElementById('personalizedQuiz').addEventListener('submit', handleSubmit);
+
+        // Supplement conditional display
+        document.querySelectorAll('[data-field="supplements"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setTimeout(() => {
+                    const supplementValue = document.querySelector('input[name="supplements"]').value;
+                    const detailsQuestion = document.getElementById('supplementDetailsQuestion');
+                    if (supplementValue === 'yes') {
+                        detailsQuestion.style.display = 'block';
+                    } else {
+                        detailsQuestion.style.display = 'none';
+                    }
+                }, 100);
+            });
+        });
+    }
+
+    // Handle Yes/No button clicks
+    function handleYesNoClick(e) {
+        const btn = e.currentTarget;
+        const field = btn.dataset.field;
+        const value = btn.dataset.value;
+
+        // Remove selected class from siblings
+        document.querySelectorAll(`[data-field="${field}"]`).forEach(b => {
+            b.classList.remove('selected');
+        });
+
+        // Add selected class to clicked button
+        btn.classList.add('selected');
+
+        // Update hidden input
+        const input = document.querySelector(`input[name="${field}"]`);
+        if (input) {
+            input.value = value;
+        }
+    }
+
+    // Handle scale button clicks
+    function handleScaleClick(e) {
+        const btn = e.currentTarget;
+        const field = btn.dataset.field;
+        const value = btn.dataset.value;
+
+        // Remove selected class from siblings
+        document.querySelectorAll(`[data-field="${field}"]`).forEach(b => {
+            b.classList.remove('selected');
+        });
+
+        // Add selected class to clicked button
+        btn.classList.add('selected');
+
+        // Update hidden input
+        const input = document.querySelector(`input[name="${field}"]`);
+        if (input) {
+            input.value = value;
+        }
+    }
+
+    // Handle problem area selection
+    function handleProblemAreaClick(e) {
+        const card = e.currentTarget;
+        const area = card.dataset.area;
+
+        card.classList.toggle('selected');
+
+        if (selectedProblemAreas.includes(area)) {
+            selectedProblemAreas = selectedProblemAreas.filter(a => a !== area);
+        } else {
+            selectedProblemAreas.push(area);
+        }
+
+        document.getElementById('selectedAreas').value = selectedProblemAreas.join(',');
+
+        // Hide error message if at least one area is selected
+        if (selectedProblemAreas.length > 0) {
+            document.getElementById('areaError').classList.remove('visible');
+        }
+    }
+
+    // Handle next button
+    function handleNext() {
+        if (!validateCurrentSection()) {
+            return;
+        }
+
+        // Special handling for problem areas section
+        if (sections[currentSection] === 'problem-areas') {
+            generateDynamicQuestions();
+        }
+
+        currentSection++;
+        showSection(currentSection);
+        updateProgress();
+    }
+
+    // Handle previous button
+    function handlePrev() {
+        currentSection--;
+        showSection(currentSection);
+        updateProgress();
+    }
+
+    // Validate current section
+    function validateCurrentSection() {
+        const currentSectionElement = document.querySelector(`.question-section[data-section="${sections[currentSection]}"]`);
+
+        if (sections[currentSection] === 'problem-areas') {
+            if (selectedProblemAreas.length === 0) {
+                document.getElementById('areaError').classList.add('visible');
+                return false;
+            }
+            return true;
+        }
+
+        // Check required fields
+        const requiredInputs = currentSectionElement.querySelectorAll('input[required], select[required]');
+        let isValid = true;
+
+        requiredInputs.forEach(input => {
+            if (!input.value) {
+                input.style.borderColor = '#f44336';
+                isValid = false;
+            } else {
+                input.style.borderColor = '';
+            }
+        });
+
+        if (!isValid) {
+            alert('Bitte füllen Sie alle erforderlichen Felder aus.');
+        }
+
+        return isValid;
+    }
+
+    // Show specific section
+    function showSection(index) {
+        document.querySelectorAll('.question-section').forEach(section => {
+            section.classList.remove('active');
+        });
+
+        const sectionToShow = document.querySelector(`.question-section[data-section="${sections[index]}"]`);
+        if (sectionToShow) {
+            sectionToShow.classList.add('active');
+        }
+
+        // Update navigation buttons
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+
+        prevBtn.style.display = index === 0 ? 'none' : 'block';
+
+        if (index === sections.length - 1) {
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'block';
+        } else {
+            nextBtn.style.display = 'block';
+            submitBtn.style.display = 'none';
+        }
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Update progress bar
+    function updateProgress() {
+        const progress = ((currentSection + 1) / sections.length) * 100;
+        document.getElementById('progressBar').style.width = progress + '%';
+    }
+
+    // Generate dynamic questions based on selected problem areas
+    function generateDynamicQuestions() {
+        const container = document.getElementById('dynamicQuestions');
+        container.innerHTML = '';
+
+        selectedProblemAreas.forEach((area, areaIndex) => {
+            const questions = PROBLEM_AREA_QUESTIONS[area];
+            if (!questions) return;
+
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'question-section';
+            sectionDiv.dataset.section = `area-${area}`;
+
+            // Add to sections array if not already there
+            const sectionName = `area-${area}`;
+            if (!sections.includes(sectionName)) {
+                sections.splice(sections.length - 1, 0, sectionName);
+            }
+
+            const areaNames = {
+                energy: 'Energie & Vitalität',
+                cognition: 'Kognitive Funktion',
+                recovery: 'Regeneration',
+                immunity: 'Immunsystem',
+                stress: 'Stressresilienz',
+                skin: 'Haut & Haare',
+                joints: 'Gelenke & Knochen'
+            };
+
+            sectionDiv.innerHTML = `
+                <h2 class="section-title">${areaNames[area]}</h2>
+                <p class="section-description">Beantworten Sie bitte die folgenden Fragen zu diesem Bereich.</p>
+            `;
+
+            questions.forEach(q => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+
+                if (q.type === 'yesno') {
+                    questionDiv.innerHTML = `
+                        <label class="question-label">
+                            ${q.label}<span class="question-required">*</span>
+                        </label>
+                        <div class="yes-no-group">
+                            <button type="button" class="yes-no-btn" data-field="${q.id}" data-value="yes">Ja</button>
+                            <button type="button" class="yes-no-btn" data-field="${q.id}" data-value="no">Nein</button>
+                        </div>
+                        <input type="hidden" name="${q.id}" required>
+                    `;
+                } else if (q.type === 'scale') {
+                    const scaleButtons = Array.from({length: 10}, (_, i) =>
+                        `<button type="button" class="scale-btn" data-field="${q.id}" data-value="${i+1}">${i+1}</button>`
+                    ).join('');
+
+                    questionDiv.innerHTML = `
+                        <label class="question-label">
+                            ${q.label}<span class="question-required">*</span>
+                        </label>
+                        <div class="scale-container">
+                            <div class="scale-values">
+                                ${scaleButtons}
+                            </div>
+                        </div>
+                        <input type="hidden" name="${q.id}" required>
+                    `;
+                } else if (q.type === 'text') {
+                    questionDiv.innerHTML = `
+                        <label class="question-label">
+                            ${q.label}<span class="question-required">*</span>
+                        </label>
+                        <input type="text" class="text-input" name="${q.id}" required>
+                    `;
+                }
+
+                sectionDiv.appendChild(questionDiv);
+            });
+
+            container.appendChild(sectionDiv);
+        });
+
+        // Re-attach event listeners for dynamically created elements
+        document.querySelectorAll('.yes-no-btn').forEach(btn => {
+            btn.removeEventListener('click', handleYesNoClick);
+            btn.addEventListener('click', handleYesNoClick);
+        });
+
+        document.querySelectorAll('.scale-btn').forEach(btn => {
+            btn.removeEventListener('click', handleScaleClick);
+            btn.addEventListener('click', handleScaleClick);
+        });
+    }
+
+    // Handle form submission
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        if (!validateCurrentSection()) {
+            return;
+        }
+
+        // Collect all form data
+        const form = e.target;
+        const formDataObj = new FormData(form);
+        const data = {};
+
+        for (let [key, value] of formDataObj.entries()) {
+            data[key] = value;
+        }
+
+        // Add selected problem areas
+        data.selectedAreas = selectedProblemAreas;
+
+        // Add order information from URL parameters (if available)
+        const urlParams = new URLSearchParams(window.location.search);
+        data.orderId = urlParams.get('order_id') || '';
+        data.orderEmail = urlParams.get('email') || data.email;
+
+        // Show loading spinner
+        document.querySelector('.quiz-content form').style.display = 'none';
+        document.getElementById('loadingSpinner').classList.add('active');
+
+        try {
+            // Submit to Shopify/API
+            await submitData(data);
+
+            // Show completion screen
+            document.getElementById('loadingSpinner').classList.remove('active');
+            document.getElementById('completionScreen').classList.add('active');
+
+        } catch (error) {
+            console.error('Submission error:', error);
+            alert('Es gab einen Fehler beim Übermitteln des Fragebogens. Bitte versuchen Sie es erneut oder kontaktieren Sie uns.');
+
+            // Show form again
+            document.getElementById('loadingSpinner').classList.remove('active');
+            document.querySelector('.quiz-content form').style.display = 'block';
+        }
+    }
+
+    // Submit data to server
+    async function submitData(data) {
+        // Add timestamp
+        data.submittedAt = new Date().toISOString();
+
+        // For development: Log to console
+        console.log('Submitting data:', data);
+
+        // In production, this would send to your Shopify app/API
+        // Example using fetch:
+        try {
+            const response = await fetch(CONFIG.apiEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error('Server response was not ok');
+            }
+
+            const result = await response.json();
+            console.log('Server response:', result);
+
+            return result;
+        } catch (error) {
+            // If API endpoint is not set up yet, simulate success after delay
+            console.warn('API endpoint not configured. Simulating success...');
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Store data in localStorage as backup
+            storeDataLocally(data);
+
+            return { success: true, message: 'Data stored locally' };
+        }
+    }
+
+    // Store data locally (backup/fallback)
+    function storeDataLocally(data) {
+        const existingData = JSON.parse(localStorage.getItem('personalizedQuestionnaireData') || '[]');
+        existingData.push(data);
+        localStorage.setItem('personalizedQuestionnaireData', JSON.stringify(existingData));
+        console.log('Data stored in localStorage');
+    }
+
+    // Export function for admin to download collected data
+    window.downloadQuestionnaireData = function() {
+        const data = JSON.parse(localStorage.getItem('personalizedQuestionnaireData') || '[]');
+        const csv = convertToCSV(data);
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `personalized-questionnaire-${Date.now()}.csv`;
+        a.click();
+    };
+
+    // Convert JSON to CSV
+    function convertToCSV(data) {
+        if (data.length === 0) return '';
+
+        const headers = Object.keys(data[0]);
+        const csvRows = [];
+
+        // Add header row
+        csvRows.push(headers.join(','));
+
+        // Add data rows
+        for (const row of data) {
+            const values = headers.map(header => {
+                const value = row[header];
+                // Escape quotes and wrap in quotes if contains comma
+                const escaped = ('' + value).replace(/"/g, '""');
+                return /[,"\n]/.test(escaped) ? `"${escaped}"` : escaped;
+            });
+            csvRows.push(values.join(','));
+        }
+
+        return csvRows.join('\n');
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>

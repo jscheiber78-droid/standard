@@ -1,0 +1,35 @@
+{
+  "name": "personalized-questionnaire-api",
+  "version": "1.0.0",
+  "description": "API handler for Bio-Eta Essenza personalized questionnaire system",
+  "main": "api-handler.js",
+  "scripts": {
+    "start": "node api-handler.js",
+    "dev": "nodemon api-handler.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "shopify",
+    "questionnaire",
+    "personalized",
+    "supplements",
+    "nutrients"
+  ],
+  "author": "Bio-Eta Essenza",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2",
+    "csv-writer": "^1.6.0",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.7",
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

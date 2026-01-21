@@ -1,0 +1,179 @@
+<!--
+  Order Confirmation Page Customization for Shopify
+
+  This code should be added to your Shopify theme's order confirmation page.
+
+  Instructions:
+  1. Go to Shopify Admin > Settings > Checkout
+  2. Scroll to "Order processing" section
+  3. In "Additional scripts" box, paste this code
+
+  OR
+
+  1. Go to Online Store > Themes > Actions > Edit code
+  2. Open Templates > checkout.liquid (or similar)
+  3. Add this code at the bottom
+-->
+
+<style>
+.personalized-redirect-banner {
+    background: linear-gradient(135deg, #4CAF50, #2196F3);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.personalized-redirect-banner h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.personalized-redirect-banner p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    opacity: 0.95;
+}
+
+.personalized-redirect-button {
+    display: inline-block;
+    background: white;
+    color: #4CAF50;
+    padding: 15px 40px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.personalized-redirect-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    color: #45a049;
+}
+
+.redirect-countdown {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .personalized-redirect-banner {
+        padding: 20px;
+    }
+
+    .personalized-redirect-banner h2 {
+        font-size: 1.4rem;
+    }
+
+    .personalized-redirect-banner p {
+        font-size: 1rem;
+    }
+}
+</style>
+
+{% if checkout.line_items.size > 0 %}
+  {% assign has_personalized = false %}
+  {% assign subscription_months = 0 %}
+
+  {% for line_item in checkout.line_items %}
+    {% comment %} Check if product is the "Personalized" product {% endcomment %}
+    {% comment %} Update "Bio-Eta Essenza" with your actual product name or use product tags {% endcomment %}
+
+    {% if line_item.product.title contains 'Bio-Eta Essenza' or line_item.product.title contains 'Personalized' %}
+      {% assign has_personalized = true %}
+
+      {% comment %} Extract subscription duration from variant or product properties {% endcomment %}
+      {% if line_item.variant.title contains '1 Monat' or line_item.variant.title contains '1 Month' %}
+        {% assign subscription_months = 1 %}
+      {% elsif line_item.variant.title contains '3 Monat' or line_item.variant.title contains '3 Month' %}
+        {% assign subscription_months = 3 %}
+      {% elsif line_item.variant.title contains '6 Monat' or line_item.variant.title contains '6 Month' %}
+        {% assign subscription_months = 6 %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% if has_personalized %}
+    <div class="personalized-redirect-banner" id="personalizedBanner">
+      <h2>🧬 Ein wichtiger Schritt fehlt noch!</h2>
+      <p>
+        Um Ihre personalisierte Nährstoffmischung zu erstellen, benötigen wir noch einige Informationen von Ihnen.
+        Bitte füllen Sie unseren kurzen Fragebogen aus (Dauer: ca. 5-7 Minuten).
+      </p>
+
+      <a href="/pages/personalized-questionnaire?order_id={{ checkout.order_id }}&email={{ checkout.email }}&months={{ subscription_months }}"
+         class="personalized-redirect-button"
+         id="questionnaireButton">
+        Zum Fragebogen →
+      </a>
+
+      <div class="redirect-countdown" id="redirectCountdown">
+        Sie werden in <span id="countdown">15</span> Sekunden automatisch weitergeleitet...
+      </div>
+    </div>
+
+    <script>
+    (function() {
+      // Auto-redirect after 15 seconds
+      let countdown = 15;
+      const countdownElement = document.getElementById('countdown');
+      const questionnaireUrl = '/pages/personalized-questionnaire?order_id={{ checkout.order_id }}&email={{ checkout.email }}&months={{ subscription_months }}';
+
+      const timer = setInterval(() => {
+        countdown--;
+        if (countdownElement) {
+          countdownElement.textContent = countdown;
+        }
+
+        if (countdown <= 0) {
+          clearInterval(timer);
+          window.location.href = questionnaireUrl;
+        }
+      }, 1000);
+
+      // Track button click
+      const button = document.getElementById('questionnaireButton');
+      if (button) {
+        button.addEventListener('click', function(e) {
+          clearInterval(timer);
+
+          // Track with Google Analytics if available
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'questionnaire_click', {
+              'event_category': 'engagement',
+              'event_label': 'order_confirmation',
+              'value': {{ subscription_months }}
+            });
+          }
+        });
+      }
+
+      // Prevent redirect if user is actively interacting with page
+      let userActive = false;
+      document.addEventListener('click', function() {
+        if (!userActive) {
+          userActive = true;
+          clearInterval(timer);
+          document.getElementById('redirectCountdown').style.display = 'none';
+        }
+      });
+
+      document.addEventListener('scroll', function() {
+        if (!userActive) {
+          userActive = true;
+          clearInterval(timer);
+          document.getElementById('redirectCountdown').style.display = 'none';
+        }
+      });
+
+    })();
+    </script>
+  {% endif %}
+{% endif %}
