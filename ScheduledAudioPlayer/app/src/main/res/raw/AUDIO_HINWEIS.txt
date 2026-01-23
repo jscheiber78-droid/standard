@@ -1,0 +1,14 @@
+HINWEIS: Audiodatei hinzufügen
+================================
+
+Um die App zu verwenden, müssen Sie eine Audiodatei in diesen Ordner legen:
+
+1. Benennen Sie Ihre Audiodatei in "sample_audio.mp3" um
+   (oder .wav, .ogg - entsprechend anpassen)
+
+2. Legen Sie die Datei in diesen Ordner:
+   app/src/main/res/raw/sample_audio.mp3
+
+3. Die App wird diese Datei automatisch zur geplanten Zeit abspielen.
+
+Unterstützte Formate: MP3, WAV, OGG, AAC, FLAC
